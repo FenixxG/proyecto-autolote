@@ -27,6 +27,10 @@ db.authenticate()
     modeloCliente.hasMany(modeloVenta);
     modeloVenta.belongsTo(modeloCliente);
 
+    // Relación: Empleados y Ventas
+    modeloEmpleado.hasMany(modeloVenta);
+    modeloVenta.belongsTo(modeloEmpleado);
+
     // Relación: Compras
     modeloCarro.hasMany(modeloCompra);
     modeloCompra.belongsTo(modeloCarro);
@@ -56,10 +60,6 @@ db.authenticate()
     modeloInventario.belongsTo(modeloMotocicleta);
     modeloProveedor.hasMany(modeloInventario);
     modeloInventario.belongsTo(modeloProveedor);
-
-    // Relación: Empleados y Ventas
-    modeloEmpleado.hasMany(modeloVenta);
-    modeloVenta.belongsTo(modeloEmpleado);
 
     // Relación: Ventas y Garantías
     modeloVenta.hasOne(modeloGarantia);
@@ -98,44 +98,12 @@ db.authenticate()
         console.log("Error al crear el modelo cliente " + e);
     })
 
-    // CREANDO MODELO COMPRA
-    await modeloCompra.sync().then((da) => {
-        console.log("Modelo Compra Creado Correctamente")
-    })
-    .catch((e) => {
-        console.log("Error al crear el modelo compra " + e);
-    })
-
-    // CREANDO MODELO COTIZACION
-    await modeloCotizacion.sync().then((da) => {
-        console.log("Modelo Cotizacion Creado Correctamente")
-    })
-    .catch((e) => {
-        console.log("Error al crear el modelo cotizacion " + e);
-    })
-
     // CREANDO MODELO EMPLEADO
     await modeloEmpleado.sync().then((da) => {
         console.log("Modelo Empleado Creado Correctamente")
     })
     .catch((e) => {
         console.log("Error al crear el modelo empleado " + e);
-    })
-
-    // CREANDO MODELO GARANTIA
-    await modeloGarantia.sync().then((da) => {
-        console.log("Modelo Garantia Creado Correctamente")
-    })
-    .catch((e) => {
-        console.log("Error al crear el modelo garantia " + e);
-    })
-
-    // CREANDO MODELO INVENTARIO
-    await modeloInventario.sync().then((da) => {
-        console.log("Modelo Inventario Creado Correctamente")
-    })
-    .catch((e) => {
-        console.log("Error al crear el modelo inventario " + e);
     })
 
     // CREANDO MODELO MOTOCICLETA
@@ -146,6 +114,14 @@ db.authenticate()
         console.log("Error al crear el modelo motocicleta " + e);
     })
 
+    // CREANDO MODELO COTIZACION
+    await modeloCotizacion.sync().then((da) => {
+        console.log("Modelo Cotizacion Creado Correctamente")
+    })
+    .catch((e) => {
+        console.log("Error al crear el modelo cotizacion " + e);
+    })
+
     // CREANDO MODELO PROVEEDOR
     await modeloProveedor.sync().then((da) => {
         console.log("Modelo Proveedor Creado Correctamente")
@@ -154,12 +130,20 @@ db.authenticate()
         console.log("Error al crear el modelo proveedor " + e);
     })
 
-    // CREANDO MODELO RECIBO
-    await modeloRecibo.sync().then((da) => {
-        console.log("Modelo Recibo Creado Correctamente")
+    // CREANDO MODELO INVENTARIO
+    await modeloInventario.sync().then((da) => {
+        console.log("Modelo Inventario Creado Correctamente")
     })
     .catch((e) => {
-        console.log("Error al crear el modelo recibo " + e);
+        console.log("Error al crear el modelo inventario " + e);
+    })
+
+    // CREANDO MODELO VENTA
+    await modeloVenta.sync().then((da) => {
+        console.log("Modelo Venta Creado Correctamente")
+    })
+    .catch((e) => {
+        console.log("Error al crear el modelo venta " + e);
     })
 
     // CREANDO MODELO SERVICIO
@@ -170,13 +154,30 @@ db.authenticate()
         console.log("Error al crear el modelo servicio " + e);
     })
 
-    // CREANDO MODELO VENTA
-    await modeloVenta.sync().then((da) => {
-        console.log("Modelo Venta Creado Correctamente")
+    // CREANDO MODELO RECIBO
+    await modeloRecibo.sync().then((da) => {
+        console.log("Modelo Recibo Creado Correctamente")
     })
     .catch((e) => {
-        console.log("Error al crear el modelo venta " + e);
+        console.log("Error al crear el modelo recibo " + e);
     })
+
+    // CREANDO MODELO COMPRA
+    await modeloCompra.sync().then((da) => {
+        console.log("Modelo Compra Creado Correctamente")
+    })
+    .catch((e) => {
+        console.log("Error al crear el modelo compra " + e);
+    })
+
+    // CREANDO MODELO GARANTIA
+    await modeloGarantia.sync().then((da) => {
+        console.log("Modelo Garantia Creado Correctamente")
+    })
+    .catch((e) => {
+        console.log("Error al crear el modelo garantia " + e);
+    })
+
 })
 .catch((er) => {
     console.log("ERROR: " + er);
@@ -188,7 +189,19 @@ app.use(morgan('dev'));
 app.use(express.urlencoded({extended: false}));
 app.use(express.json());
 app.use('/api', require('./rutas')); //usando archivo aparte que se encarga solo de las rutas
-//app.use('/api/cargos', require('./rutas/rutaCargo'));
+app.use('/api/cargos', require('./rutas/rutaCargo'));
+app.use('/api/carros', require('./rutas/rutaCarro'));
+app.use('/api/clientes', require('./rutas/rutaCliente'));
+app.use('/api/compras', require('./rutas/rutaCompra'));
+app.use('/api/cotizaciones', require('./rutas/rutaCotizacion'));
+app.use('/api/empleados', require('./rutas/rutaEmpleado'));
+app.use('/api/garantias', require('./rutas/rutaGarantia'));
+app.use('/api/inventario', require('./rutas/rutaInventario'));
+app.use('/api/motocicletas', require('./rutas/rutaMoticicleta'));
+app.use('/api/proveedores', require('./rutas/rutaProveedor'));
+app.use('/api/recibos', require('./rutas/rutaRecibo'));
+app.use('/api/servicios', require('./rutas/rutaServicio'));
+app.use('/api/ventas', require('./rutas/rutaVenta'));
 
 
 app.listen(app.get('port'), ()=>{
