@@ -1,5 +1,9 @@
 const express = require('express');
 const morgan = require('morgan');
+const helmet = require('helmet');
+const rateLimit = require('express-rate-limit');
+const cors = require('cors');
+
 const db = require('./configuracion/db');
 const modeloCargo = require('./modelos/cargo');
 const modeloCarro = require('./modelos/carro');
