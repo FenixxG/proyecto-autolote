@@ -1,10 +1,10 @@
 const sequelize = require('sequelize');
-const db = require('../configuracion/db');
+const db = require('../../configuracion/db');
 
-const Recibo = db.define(
-    "recibo",
+const Venta = db.define(
+    "venta",
     {
-        monto: {
+        precio: {
             type: sequelize.DECIMAL(10, 2),
             allowNull: false
         },
@@ -14,8 +14,8 @@ const Recibo = db.define(
         }
     },
     {
-        tablename: "recibos"
+        tablename: "ventas"
     }
 );
 
-module.exports = Recibo;
+module.exports = Venta;
