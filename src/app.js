@@ -16,8 +16,6 @@ const db = require('./configuracion/db');
 const { CrearModelos } = require('./modelos');
 
 
-
-
 db.authenticate()
 .then(() => {
     console.log(
@@ -97,20 +95,20 @@ app.use(cors(require('./configuracion/cors')));
 app.use(express.json());
 
 
-app.use('/api', require('./rutas')); //usando archivo aparte que se encarga solo de las rutas
-app.use('/api/cargos', require('./rutas/rutaCargo'));
-app.use('/api/carros', require('./rutas/rutaCarro'));
-app.use('/api/clientes', require('./rutas/rutaCliente'));
-app.use('/api/compras', require('./rutas/rutaCompra'));
-app.use('/api/cotizaciones', require('./rutas/rutaCotizacion'));
-app.use('/api/empleados', require('./rutas/rutaEmpleado'));
-app.use('/api/garantias', require('./rutas/rutaGarantia'));
-app.use('/api/inventario', require('./rutas/rutaInventario'));
-app.use('/api/motocicletas', require('./rutas/rutaMoticicleta'));
-app.use('/api/proveedores', require('./rutas/rutaProveedor'));
-app.use('/api/recibos', require('./rutas/rutaRecibo'));
-app.use('/api/servicios', require('./rutas/rutaServicio'));
-app.use('/api/ventas', require('./rutas/rutaVenta'));
+//app.use('/api', require('./rutas')); //usando archivo aparte que se encarga solo de las rutas
+app.use('/api/cargos', require('./rutas/cargos/rutaCargo'));
+app.use('/api/carros', require('./rutas/carros/rutaCarro'));
+app.use('/api/clientes', require('./rutas/clientes/rutaCliente'));
+app.use('/api/compras', require('./rutas/compras/rutaCompra'));
+app.use('/api/cotizaciones', require('./rutas/cotizaciones/rutaCotizacion'));
+app.use('/api/empleados', require('./rutas/empleados/rutaEmpleado'));
+app.use('/api/garantias', require('./rutas/garantias/rutaGarantia'));
+app.use('/api/inventario', require('./rutas/inventario/rutaInventario'));
+app.use('/api/motocicletas', require('./rutas/motocicletas/rutaMoticicleta'));
+app.use('/api/proveedores', require('./rutas/proveedores/rutaProveedor'));
+app.use('/api/recibos', require('./rutas/recibos/rutaRecibo'));
+app.use('/api/servicios', require('./rutas/servicios/rutaServicio'));
+app.use('/api/ventas', require('./rutas/ventas/rutaVenta'));
 
 
 // Documentacion
