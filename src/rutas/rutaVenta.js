@@ -18,9 +18,9 @@ rutas.post('/guardar',
             });
         }
     }),
-    body("formaPago").isString({min: 3, max : 50}).withMessage('El formaPago debe tener entre 3 a 50 caracteres').custom(async value =>{
+    body("formaPago").isString({min: 3, max : 50}).withMessage('La formaPago debe ser efectivo, tarjeta, transferencia o credito').custom(async value =>{
         if(!value){
-            throw new Error('El nombre no permite valores nulos');
+            throw new Error('La formaPago no permite valores nulos');
         }
         else{
             const buscarVenta = await ModeloVenta.findOne({
@@ -36,7 +36,7 @@ rutas.put('/editar',
     query("id").isInt().withMessage("El id debe ser un entero")
     .custom(async value => {
         if (!value) {
-            throw new Error('El nombre no permite valores nulos');
+            throw new Error('El id no permite valores nulos');
         } else {
             const buscarVenta = await ModeloVenta.findOne({
                 where: {
@@ -44,7 +44,7 @@ rutas.put('/editar',
                 }
             });
             if (!buscarVenta) {
-                throw new Error('El id del cargo no existe');
+                throw new Error('El id de la venta no existe');
             }
         }
     }),
@@ -59,7 +59,7 @@ rutas.put('/editar',
                 }
             });
             if (buscarVenta) {
-                throw new Error('El nombre del cargo ya existe');
+                throw new Error('El nombre de la venta ya existe');
             }
         }
     }),
@@ -70,7 +70,7 @@ rutas.delete('/eliminar',
     query("id").isInt().withMessage("El id debe ser un entero")
     .custom(async value => {
         if (!value) {
-            throw new Error('El nombre no permite valores nulos');
+            throw new Error('El id no permite valores nulos');
         } else {
             const buscarVenta = await ModeloVenta.findOne({
                 where: {
@@ -78,7 +78,7 @@ rutas.delete('/eliminar',
                 }
             });
             if (!buscarVenta) {
-                throw new Error('El id del cargo no existe');
+                throw new Error('El id de la venta no existe');
             }
         }
     }),

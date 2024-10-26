@@ -9,7 +9,7 @@ rutas.get('/listar', controladorCliente.listar);
 rutas.post('/guardar',
     body("identidad").isLength({min: 3, max : 15}).withMessage('El nombre debe tener entre 3 a 50 caracteres').custom(async value =>{
         if(!value){
-            throw new Error('El nombre no permite valores nulos');
+            throw new Error('La identidad no permite valores nulos');
         }
         else{
             const buscarCliente = await ModeloCliente.findOne({
@@ -18,7 +18,7 @@ rutas.post('/guardar',
                 }
             });
             if(buscarCliente){
-                throw new Error('El nombre del cargo ya existe');
+                throw new Error('La identidad del cliente ya existe');
             }
         }
     }),
@@ -33,7 +33,7 @@ rutas.post('/guardar',
                 }
             });
             if(buscarCliente){
-                throw new Error('El nombre del cargo ya existe');
+                throw new Error('El rtn del cliente ya existe');
             }
         }
     }),
@@ -63,7 +63,7 @@ rutas.post('/guardar',
     }),
     body("primerapellido").isLength({min: 1, max : 20}).withMessage('El primerapellido debe tener entre 3 a 50 caracteres').custom(async value =>{
         if(!value){
-            throw new Error('El nombre no permite valores nulos');
+            throw new Error('El primerapellido no permite valores nulos');
         }
         else{
             const buscarCliente = await ModeloCliente.findOne({
@@ -85,9 +85,9 @@ rutas.post('/guardar',
             });
         }
     }),
-    body("email").isLength({min: 3, max : 50}).withMessage('El nombre debe tener entre 3 a 50 caracteres').custom(async value =>{
+    body("email").isLength({min: 3, max : 50}).withMessage('El email debe tener entre 3 a 50 caracteres').custom(async value =>{
         if(!value){
-            throw new Error('El nombre no permite valores nulos');
+            throw new Error('El email no permite valores nulos');
         }
         else{
             const buscarCliente = await ModeloCliente.findOne({
@@ -130,21 +130,21 @@ rutas.put('/editar',
     query("id").isInt().withMessage("El id debe ser un entero")
     .custom(async value => {
         if (!value) {
-            throw new Error('El nombre no permite valores nulos');
+            throw new Error('El id no permite valores nulos');
         } else {
-            const buscarCargo = await ModeloCliente.findOne({
+            const buscarCliente = await ModeloCliente.findOne({
                 where: {
                     id: value
                 }
             });
             if (!buscarCliente) {
-                throw new Error('El id del cargo no existe');
+                throw new Error('El id del cliente no existe');
             }
         }
     }),
-    body("identidad").isLength({min: 3, max : 15}).withMessage('El nombre debe tener entre 3 a 50 caracteres').custom(async value =>{
+    body("identidad").isLength({min: 3, max : 15}).withMessage('La identidad debe tener entre 3 a 15 caracteres').custom(async value =>{
         if(!value){
-            throw new Error('El nombre no permite valores nulos');
+            throw new Error('La identidad no permite valores nulos');
         }
         else{
             const buscarCliente = await ModeloCliente.findOne({
@@ -153,7 +153,7 @@ rutas.put('/editar',
                 }
             });
             if(buscarCliente){
-                throw new Error('El nombre del cargo ya existe');
+                throw new Error('La identidad del cliente ya existe');
             }
         }
     }),
@@ -220,9 +220,9 @@ rutas.put('/editar',
             });
         }
     }),
-    body("email").isLength({min: 3, max : 50}).withMessage('El nombre debe tener entre 3 a 50 caracteres').custom(async value =>{
+    body("email").isLength({min: 3, max : 50}).withMessage('El email debe tener entre 3 a 50 caracteres').custom(async value =>{
         if(!value){
-            throw new Error('El nombre no permite valores nulos');
+            throw new Error('El email no permite valores nulos');
         }
         else{
             const buscarCliente = await ModeloCliente.findOne({
@@ -231,7 +231,7 @@ rutas.put('/editar',
                 }
             });
             if(buscarCliente){
-                throw new Error('El nombre del cargo ya existe');
+                throw new Error('El email del cliente ya existe');
             }
         }
     }),
@@ -245,6 +245,9 @@ rutas.put('/editar',
                     telefono: value
                 }
             });
+            if(buscarCliente){
+                throw new Error('El telefono del cliente ya existe');
+            }
         }
     }),
     body("direccion").isLength({min: 3, max : 50}).withMessage('La direccion debe tener entre 3 a 50 caracteres').custom(async value =>{
@@ -265,7 +268,7 @@ rutas.delete('/eliminar',
     query("id").isInt().withMessage("El id debe ser un entero")
     .custom(async value => {
         if (!value) {
-            throw new Error('El nombre no permite valores nulos');
+            throw new Error('El id no permite valores nulos');
         } else {
             const buscarCliente = await ModeloCliente.findOne({
                 where: {

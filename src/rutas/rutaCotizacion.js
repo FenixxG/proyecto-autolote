@@ -9,7 +9,7 @@ rutas.get('/listar', controladorCotizaciones.listar);
 rutas.post('/guardar',
     body("tasaInteres" ).isDecimal({min:1}).withMessage('Debe tener una tasa de interes').custom(async value =>{
         if(!value){
-            throw new Error('El nombre no permite valores nulos');
+            throw new Error('La tasa de interes no permite valores nulos');
         }
         else{
             const buscarCotizaciones = await ModeloCotizaciones.findOne({
@@ -21,7 +21,7 @@ rutas.post('/guardar',
     }),
     body("plazo" ).isInt({min: 1}).withMessage('Debe haber un plazo de tiempo').custom(async value =>{
         if(!value){
-            throw new Error('El nombre no permite valores nulos');
+            throw new Error('El plazo no permite valores nulos');
         }
         else{
             const buscarCotizaciones = await ModeloCotizaciones.findOne({
@@ -33,7 +33,7 @@ rutas.post('/guardar',
     }),
     body("montoTotal" ).isDecimal({min: 1}).withMessage('El monto minimo es 1').custom(async value =>{
         if(!value){
-            throw new Error('El nombre no permite valores nulos');
+            throw new Error('El monto total no permite valores nulos');
         }
         else{
             const buscarCotizaciones = await ModeloCotizaciones.findOne({
@@ -49,7 +49,7 @@ rutas.put('/editar',
     query("id").isInt().withMessage("El id debe ser un entero")
     .custom(async value => {
         if (!value) {
-            throw new Error('El nombre no permite valores nulos');
+            throw new Error('El id no permite valores nulos');
         } else {
             const buscarCotizaciones = await ModeloCotizaciones.findOne({
                 where: {
@@ -57,13 +57,13 @@ rutas.put('/editar',
                 }
             });
             if (!buscarCotizaciones) {
-                throw new Error('El id del cargo no existe');
+                throw new Error('El id de la cotizacion no existe');
             }
         }
     }),
     body("tasaInteres" ).isDecimal({min:1}).withMessage('Debe tener una tasa de interes').custom(async value =>{
         if(!value){
-            throw new Error('El nombre no permite valores nulos');
+            throw new Error('La tasa de interes no permite valores nulos');
         }
         else{
             const buscarCotizaciones = await ModeloCotizaciones.findOne({
@@ -75,7 +75,7 @@ rutas.put('/editar',
     }),
     body("plazo" ).isInt({min: 1}).withMessage('Debe haber un plazo de tiempo').custom(async value =>{
         if(!value){
-            throw new Error('El nombre no permite valores nulos');
+            throw new Error('El plazo no permite valores nulos');
         }
         else{
             const buscarCotizaciones = await ModeloCotizaciones.findOne({
@@ -87,7 +87,7 @@ rutas.put('/editar',
     }),
     body("montoTotal" ).isDecimal({min: 1}).withMessage('El monto minimo es 1').custom(async value =>{
         if(!value){
-            throw new Error('El nombre no permite valores nulos');
+            throw new Error('El monto total no permite valores nulos');
         }
         else{
             const buscarCotizaciones = await ModeloCotizaciones.findOne({
@@ -103,7 +103,7 @@ rutas.delete('/eliminar',
     query("id").isInt().withMessage("El id debe ser un entero")
     .custom(async value => {
         if (!value) {
-            throw new Error('El nombre no permite valores nulos');
+            throw new Error('El id no permite valores nulos');
         } else {
             const buscarCotizaciones = await ModeloCotizaciones.findOne({
                 where: {
@@ -111,7 +111,7 @@ rutas.delete('/eliminar',
                 }
             });
             if (!buscarCotizaciones) {
-                throw new Error('El id del cargo no existe');
+                throw new Error('El id de la cotizacion no existe');
             }
         }
     }),

@@ -42,7 +42,7 @@ rutas.post('/guardar',
             throw new Error('El telefono no permite valores nulos');
         }
         else{
-            const buscarCliente = await ModeloProveedor.findOne({
+            const buscarProveedor = await ModeloProveedor.findOne({
                 where: {
                     telefono: value
                 }
@@ -55,7 +55,7 @@ rutas.put('/editar',
     query("id").isInt().withMessage("El id debe ser un entero")
     .custom(async value => {
         if (!value) {
-            throw new Error('El nombre no permite valores nulos');
+            throw new Error('El id no permite valores nulos');
         } else {
             const buscarProveedor = await ModeloProveedor.findOne({
                 where: {
@@ -63,7 +63,7 @@ rutas.put('/editar',
                 }
             });
             if (!buscarProveedor) {
-                throw new Error('El id del cargo no existe');
+                throw new Error('El id del proveedor no existe');
             }
         }
     }),
@@ -107,7 +107,7 @@ rutas.delete('/eliminar',
     query("id").isInt().withMessage("El id debe ser un entero")
     .custom(async value => {
         if (!value) {
-            throw new Error('El nombre no permite valores nulos');
+            throw new Error('El id no permite valores nulos');
         } else {
             const buscarProveedor = await ModeloProveedor.findOne({
                 where: {
@@ -115,7 +115,7 @@ rutas.delete('/eliminar',
                 }
             });
             if (!buscarProveedor) {
-                throw new Error('El id del cargo no existe');
+                throw new Error('El id del proveedor no existe');
             }
         }
     }),

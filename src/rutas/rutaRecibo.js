@@ -18,7 +18,7 @@ rutas.post('/guardar',
             });
         }
     }),
-    body("formaPago").isString({min: 3, max :10}).withMessage('La formaPago debe tener entre 3 a 50 caracteres').custom(async value =>{
+    body("formaPago").isString({min: 3, max :10}).withMessage('La formaPago debe ser efectivo, tarjeta, transferencia o credito').custom(async value =>{
         if(!value){
             throw new Error('La formaPago no permite valores nulos');
         }
@@ -36,7 +36,7 @@ rutas.put('/editar',
     query("id").isInt().withMessage("El id debe ser un entero")
     .custom(async value => {
         if (!value) {
-            throw new Error('El nombre no permite valores nulos');
+            throw new Error('El id no permite valores nulos');
         } else {
             const buscarRecibos = await ModeloRecibo.findOne({
                 where: {
@@ -44,7 +44,7 @@ rutas.put('/editar',
                 }
             });
             if (!buscarRecibos) {
-                throw new Error('El id del cargo no existe');
+                throw new Error('El id del recibo no existe');
             }
         }
     }),
@@ -60,7 +60,7 @@ rutas.put('/editar',
             });
         }
     }),
-    body("formaPago").isString({min: 3, max :10}).withMessage('La formaPago debe tener entre 3 a 50 caracteres').custom(async value =>{
+    body("formaPago").isString({min: 3, max :10}).withMessage('La formaPago debe ser efectivo, tarjeta, transferencia o credito').custom(async value =>{
         if(!value){
             throw new Error('La formaPago no permite valores nulos');
         }
@@ -78,7 +78,7 @@ rutas.delete('/eliminar',
     query("id").isInt().withMessage("El id debe ser un entero")
     .custom(async value => {
         if (!value) {
-            throw new Error('El nombre no permite valores nulos');
+            throw new Error('El id no permite valores nulos');
         } else {
             const buscarRecibos = await ModeloRecibo.findOne({
                 where: {
@@ -86,7 +86,7 @@ rutas.delete('/eliminar',
                 }
             });
             if (!buscarRecibos) {
-                throw new Error('El id del cargo no existe');
+                throw new Error('El id del recibo no existe');
             }
         }
     }),

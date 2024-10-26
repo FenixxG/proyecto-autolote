@@ -64,19 +64,19 @@ rutas.put('/editar',
         else{
             const buscarCargo = await ModeloCargo.findOne({
                 where: {
-                    marca: value
+                    nombre: value
                 }
             });
         }
     }),
     body("descripcion").isLength({min: 1, max : 50}).withMessage('La descripcion debe tener entre 1 a 50 caracteres').custom(async value =>{
         if(!value){
-            throw new Error('El nombre no permite valores nulos');
+            throw new Error('La descripcion no permite valores nulos');
         }
         else{
             const buscarCargo = await ModeloCargo.findOne({
                 where: {
-                    modelo: value
+                    descripcion: value
                 }
             });
         }

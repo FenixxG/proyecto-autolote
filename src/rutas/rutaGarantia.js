@@ -21,7 +21,7 @@ rutas.post('/guardar',
     }),
     body("duracionMeses").isLength({min: 1, max : 50}).withMessage('El mes debe ser entre 3 a 50 caracteres').custom(async value =>{
         if(!value){
-            throw new Error('La duraion del mes no permite valores nulos');
+            throw new Error('La duracion no permite valores nulos');
         }
         else{
             const buscarGarantia = await ModeloGarantia.findOne({
@@ -32,14 +32,14 @@ rutas.post('/guardar',
 
         }
     }),
-    body("descripcion").isLength({min: 3, max : 50}).withMessage('El nombre debe tener entre 3 a 50 caracteres'),
+    body("descripcion").isLength({min: 3, max : 50}).withMessage('La descripcion debe tener entre 3 a 50 caracteres'),
     controladorGarantia.guardar);
 
 rutas.put('/editar',
     query("id").isInt().withMessage("El id debe ser un entero")
     .custom(async value => {
         if (!value) {
-            throw new Error('El nombre no permite valores nulos');
+            throw new Error('El id no permite valores nulos');
         } else {
             const buscarGarantia = await ModeloGarantia.findOne({
                 where: {
@@ -47,7 +47,7 @@ rutas.put('/editar',
                 }
             });
             if (!buscarGarantia) {
-                throw new Error('El id del cargo no existe');
+                throw new Error('El id de la garantia no existe');
             }
         }
     }),
@@ -65,7 +65,7 @@ rutas.put('/editar',
     }),
     body("duracionMeses").isLength({min: 1, max : 50}).withMessage('El mes debe ser entre 3 a 50 caracteres').custom(async value =>{
         if(!value){
-            throw new Error('La duraion del mes no permite valores nulos');
+            throw new Error('La duracion del mes no permite valores nulos');
         }
         else{
             const buscarGarantia = await ModeloGarantia.findOne({
@@ -82,7 +82,7 @@ rutas.delete('/eliminar',
     query("id").isInt().withMessage("El id debe ser un entero")
     .custom(async value => {
         if (!value) {
-            throw new Error('El nombre no permite valores nulos');
+            throw new Error('El id no permite valores nulos');
         } else {
             const buscarGarantia = await ModeloGarantia.findOne({
                 where: {
@@ -90,7 +90,7 @@ rutas.delete('/eliminar',
                 }
             });
             if (!buscarGarantia) {
-                throw new Error('El id del cargo no existe');
+                throw new Error('El id de la garantia no existe');
             }
         }
     }),

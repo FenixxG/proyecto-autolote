@@ -9,7 +9,7 @@ rutas.get('/listar', controladorCompras.listar);
 rutas.post('/guardar',
     body("precio").isDecimal({min: 1}).withMessage('El precio debe tener almenos un valor').custom(async value =>{
         if(!value){
-            throw new Error('El nombre no permite valores nulos');
+            throw new Error('El precio no permite valores nulos');
         }
         else{
             const buscarCompras = await ModeloCompras.findOne({
@@ -37,10 +37,10 @@ rutas.put('/editar',
             }
         }
     }),
-    body("precio").isDecimal({ min: 1 }).withMessage('El nombre debe tener un valor')
+    body("precio").isDecimal({ min: 1 }).withMessage('El precio debe tener un valor')
     .custom(async value => {
         if (!value) {
-            throw new Error('El nombre no permite valores nulos');
+            throw new Error('El precio no permite valores nulos');
         } else {
             const buscarCompras = await ModeloCompras.findOne({
                 where: {
@@ -55,7 +55,7 @@ rutas.delete('/eliminar',
     query("id").isInt().withMessage("El id debe ser un entero")
     .custom(async value => {
         if (!value) {
-            throw new Error('El nombre no permite valores nulos');
+            throw new Error('El id no permite valores nulos');
         } else {
             const buscarCompras = await ModeloCompras.findOne({
                 where: {

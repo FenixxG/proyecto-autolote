@@ -9,7 +9,7 @@ rutas.get('/listar', controladorCarro.listar);
 rutas.post('/guardar',
     body("marca").isLength({min: 3, max : 50}).withMessage('El nombre debe tener entre 3 a 50 caracteres').custom(async value =>{
         if(!value){
-            throw new Error('El nombre no permite valores nulos');
+            throw new Error('La marca no permite valores nulos');
         }
         else{
             const buscarCarro = await ModeloCarros.findOne({
@@ -21,7 +21,7 @@ rutas.post('/guardar',
     }),
     body("modelo").isLength({min: 3, max : 50}).withMessage('El nombre debe tener entre 3 a 50 caracteres').custom(async value =>{
         if(!value){
-            throw new Error('El nombre no permite valores nulos');
+            throw new Error('El modelo no permite valores nulos');
         }
         else{
             const buscarCarro = await ModeloCarros.findOne({
@@ -39,19 +39,19 @@ rutas.post('/guardar',
 
     body("color").isLength({min: 3, max : 50}).withMessage('El nombre debe tener entre 3 a 50 caracteres').custom(async value =>{
         if(!value){
-            throw new Error('El anio no permite valores nulos');
+            throw new Error('El color no permite valores nulos');
         }
     }),
 
     body("precio").isInt({min: 1, max : 3000000}).withMessage('El nombre debe tener entre 3 a 50 caracteres').custom(async value =>{
         if(!value){
-            throw new Error('El anio no permite valores nulos');
+            throw new Error('El precio no permite valores nulos');
         }
     }),
 
     body("estado").isLength({min: 3, max : 50}).withMessage('El nombre debe tener entre 3 a 50 caracteres').custom(async value =>{
         if(!value){
-            throw new Error('El nombre no permite valores nulos');
+            throw new Error('El estado no permite valores nulos');
         }
         else{
             const buscarCarro = await ModeloCarros.findOne({
@@ -63,7 +63,7 @@ rutas.post('/guardar',
     }),
     body("disponible").isBoolean().withMessage('El valor tiene que ser booleano').custom(async value =>{
         if(!value){
-            throw new Error('El anio no permite valores nulos');
+            throw new Error('No permite valores nulos');
         }
     }),
     controladorCarro.guardar);
@@ -72,7 +72,7 @@ rutas.put('/editar',
     query("id").isInt().withMessage("El id debe ser un entero")
     .custom(async value => {
         if (!value) {
-            throw new Error('El nombre no permite valores nulos');
+            throw new Error('El id no permite valores nulos');
         } else {
             const buscarCarro = await ModeloCarros.findOne({
                 where: {
@@ -86,7 +86,7 @@ rutas.put('/editar',
     }),
     body("marca").isLength({min: 3, max : 50}).withMessage('El nombre debe tener entre 3 a 50 caracteres').custom(async value =>{
         if(!value){
-            throw new Error('El nombre no permite valores nulos');
+            throw new Error('La marca no permite valores nulos');
         }
         else{
             const buscarCarro = await ModeloCarros.findOne({
@@ -98,7 +98,7 @@ rutas.put('/editar',
     }),
     body("modelo").isLength({min: 3, max : 50}).withMessage('El nombre debe tener entre 3 a 50 caracteres').custom(async value =>{
         if(!value){
-            throw new Error('El nombre no permite valores nulos');
+            throw new Error('El modelo no permite valores nulos');
         }
         else{
             const buscarCarro = await ModeloCarros.findOne({
@@ -108,24 +108,24 @@ rutas.put('/editar',
             });
         }
     }),
-    body("anio").isInt({min: 4}).withMessage('El anio tiene que ser numerico').custom(async value =>{
+    body("anio").isInt({min: 4}).withMessage('El año tiene que ser numerico').custom(async value =>{
         if(!value){
-            throw new Error('El anio no permite valores nulos');
+            throw new Error('El año no permite valores nulos');
         }
     }),
-    body("color").isLength({min: 3, max : 50}).withMessage('El nombre debe tener entre 3 a 50 caracteres').custom(async value =>{
+    body("color").isLength({min: 3, max : 50}).withMessage('El color debe tener entre 3 a 50 caracteres').custom(async value =>{
         if(!value){
-            throw new Error('El anio no permite valores nulos');
+            throw new Error('El color no permite valores nulos');
         }
     }),
-    body("precio").isInt({min: 1, max : 3000000}).withMessage('El nombre debe tener entre 3 a 50 caracteres').custom(async value =>{
+    body("precio").isInt({min: 1, max : 3000000}).withMessage('El precio debe tener entre 3 a 50 caracteres').custom(async value =>{
         if(!value){
-            throw new Error('El anio no permite valores nulos');
+            throw new Error('El precio no permite valores nulos');
         }
     }),
     body("estado").isLength({min: 3, max : 50}).withMessage('El nombre debe tener entre 3 a 50 caracteres').custom(async value =>{
         if(!value){
-            throw new Error('El nombre no permite valores nulos');
+            throw new Error('El estado no permite valores nulos');
         }
         else{
             const buscarCarro = await ModeloCarros.findOne({
@@ -137,7 +137,7 @@ rutas.put('/editar',
     }),
     body("disponible").isBoolean().withMessage('El valor tiene que ser booleano').custom(async value =>{
         if(!value){
-            throw new Error('El anio no permite valores nulos');
+            throw new Error('No permite valores nulos');
         }
     }),
     controladorCarro.editar);
@@ -146,7 +146,7 @@ rutas.delete('/eliminar',
     query("id").isInt().withMessage("El id debe ser un entero")
     .custom(async value => {
         if (!value) {
-            throw new Error('El nombre no permite valores nulos');
+            throw new Error('El id no permite valores nulos');
         } else {
             const buscarCarro = await ModeloCarros.findOne({
                 where: {

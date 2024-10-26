@@ -11,7 +11,7 @@ rutas.post('/guardar',
     }),
     body("costo").isDecimal({min: 1, }).withMessage('El costo debe tener minimo 1 caracteres').custom(async value =>{
         if(!value){
-            throw new Error('El nombre no permite valores nulos');
+            throw new Error('El costo no permite valores nulos');
         }
         else{
             const buscarServicio = await ModeloServicio.findOne({
@@ -27,7 +27,7 @@ rutas.put('/editar',
     query("id").isInt().withMessage("El id debe ser un entero")
     .custom(async value => {
         if (!value) {
-            throw new Error('El nombre no permite valores nulos');
+            throw new Error('El id no permite valores nulos');
         } else {
             const buscarServicio = await ModeloServicio.findOne({
                 where: {
@@ -35,14 +35,14 @@ rutas.put('/editar',
                 }
             });
             if (!buscarServicio) {
-                throw new Error('El id del cargo no existe');
+                throw new Error('El id del servicio no existe');
             }
         }
     }),
     body("descripcion").isString({ max : 80}).withMessage('El maximo es de 80 caracteres').custom(async value =>{}),
     body("costo").isDecimal({min: 1, }).withMessage('El costo debe tener minimo 1 caracteres').custom(async value =>{
         if(!value){
-            throw new Error('El nombre no permite valores nulos');
+            throw new Error('El costo no permite valores nulos');
         }
         else{
             const buscarServicio = await ModeloServicio.findOne({
@@ -58,7 +58,7 @@ rutas.delete('/eliminar',
     query("id").isInt().withMessage("El id debe ser un entero")
     .custom(async value => {
         if (!value) {
-            throw new Error('El nombre no permite valores nulos');
+            throw new Error('El id no permite valores nulos');
         } else {
             const buscarServicio = await ModeloServicio.findOne({
                 where: {
@@ -66,7 +66,7 @@ rutas.delete('/eliminar',
                 }
             });
             if (!buscarServicio) {
-                throw new Error('El id del cargo no existe');
+                throw new Error('El id del servicio no existe');
             }
         }
     }),

@@ -6,9 +6,9 @@ const rutas = Router();
 rutas.get('/', controladorInventario.inicio);
 rutas.get('/listar', controladorInventario.listar);
 rutas.post('/guardar',
-    body("nombreArticulo").isLength({min: 3, max : 50}).withMessage('El Articulo debe tener entre 3 a 50 caracteres').custom(async value =>{
+    body("nombreArticulo").isLength({min: 3, max : 50}).withMessage('El Nombre del Articulo debe tener entre 3 a 50 caracteres').custom(async value =>{
         if(!value){
-            throw new Error('El Articulo no permite valores nulos');
+            throw new Error('El Nombre del Articulo no permite valores nulos');
         }
         else{
             const buscarInventario = await ModeloInventario.findOne({
@@ -25,7 +25,7 @@ rutas.put('/editar',
     query("id").isInt().withMessage("El id debe ser un entero")
     .custom(async value => {
         if (!value) {
-            throw new Error('El nombre no permite valores nulos');
+            throw new Error('El id no permite valores nulos');
         } else {
             const buscarInventario = await ModeloInventario.findOne({
                 where: {
@@ -33,7 +33,7 @@ rutas.put('/editar',
                 }
             });
             if (!buscarInventario) {
-                throw new Error('El id del cargo no existe');
+                throw new Error('El id del inventario no existe');
             }
         }
     }),
