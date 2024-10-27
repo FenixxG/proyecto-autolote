@@ -1,11 +1,112 @@
 const { Router } = require('express');
 const { body, query } = require('express-validator');
 const controladorCliente = require('../../controladores/clientes/controladorCliente');
-const ModeloCliente = require('../modelos/cliente');
+const ModeloCliente = require('../../modelos/clientes/cliente');
 const rutas = Router();
 rutas.get('/', controladorCliente.inicio);
+
+/**
+ * @swagger
+ * tags:
+ *   name: Clientes
+ *   description: Operaciones relacionadas con los clientes
+ */
+
+/**
+ * @swagger
+ * /clientes/listar:
+ *   get:
+ *     summary: Obtener lista de clientes
+ *     tags: [Clientes]
+ *     responses:
+ *       200:
+ *         description: Lista de clientes obtenida con éxito
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   id:
+ *                     type: integer
+ *                     description: ID del cliente
+ *                   identidad:
+ *                     type: string
+ *                     description: Identidad del cliente
+ *                   rtn:
+ *                     type: string
+ *                     description: RTN del cliente
+ *                   primernombre:
+ *                     type: string
+ *                     description: Primer nombre del cliente
+ *                   segundonombre:
+ *                     type: string
+ *                     description: Segundo nombre del cliente
+ *                   primerapellido:
+ *                     type: string
+ *                     description: Primer apellido del cliente
+ *                   segundoapellido:
+ *                     type: string
+ *                     description: Segundo apellido del cliente
+ *                   email:
+ *                     type: string
+ *                     description: Correo electrónico del cliente
+ *                   telefono:
+ *                     type: string
+ *                     description: Número de teléfono del cliente
+ *                   direccion:
+ *                     type: string
+ *                     description: Dirección del cliente
+ */
 rutas.get('/listar', controladorCliente.listar);
 
+/**
+ * @swagger
+ * /clientes/guardar:
+ *   post:
+ *     summary: Registrar un nuevo cliente
+ *     tags: [Clientes]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               identidad:
+ *                 type: string
+ *                 description: Identidad del cliente
+ *               rtn:
+ *                 type: string
+ *                 description: RTN del cliente
+ *               primernombre:
+ *                 type: string
+ *                 description: Primer nombre del cliente
+ *               segundonombre:
+ *                 type: string
+ *                 description: Segundo nombre del cliente
+ *               primerapellido:
+ *                 type: string
+ *                 description: Primer apellido del cliente
+ *               segundoapellido:
+ *                 type: string
+ *                 description: Segundo apellido del cliente
+ *               email:
+ *                 type: string
+ *                 description: Correo electrónico del cliente
+ *               telefono:
+ *                 type: string
+ *                 description: Número de teléfono del cliente
+ *               direccion:
+ *                 type: string
+ *                 description: Dirección del cliente
+ *     responses:
+ *       201:
+ *         description: Cliente creado exitosamente
+ *       400:
+ *         description: Error en la validación de los datos
+ */
 rutas.post('/guardar',
     body("identidad").isLength({min: 3, max : 15}).withMessage('El nombre debe tener entre 3 a 50 caracteres').custom(async value =>{
         if(!value){
@@ -126,6 +227,61 @@ rutas.post('/guardar',
     }),
     controladorCliente.guardar);
 
+/**
+ * @swagger
+ * /clientes/editar:
+ *   put:
+ *     summary: Editar un cliente existente
+ *     tags: [Clientes]
+ *     parameters:
+ *       - in: query
+ *         name: id
+ *         schema:
+ *           type: integer
+ *         required: true
+ *         description: ID del cliente a editar
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               identidad:
+ *                 type: string
+ *                 description: Identidad del cliente
+ *               rtn:
+ *                 type: string
+ *                 description: RTN del cliente
+ *               primernombre:
+ *                 type: string
+ *                 description: Primer nombre del cliente
+ *               segundonombre:
+ *                 type: string
+ *                 description: Segundo nombre del cliente
+ *               primerapellido:
+ *                 type: string
+ *                 description: Primer apellido del cliente
+ *               segundoapellido:
+ *                 type: string
+ *                 description: Segundo apellido del cliente
+ *               email:
+ *                 type: string
+ *                 description: Correo electrónico del cliente
+ *               telefono:
+ *                 type: string
+ *                 description: Número de teléfono del cliente
+ *               direccion:
+ *                 type: string
+ *                 description: Dirección del cliente
+ *     responses:
+ *       200:
+ *         description: Cliente actualizado exitosamente
+ *       400:
+ *         description: Error en la validación de los datos
+ *       404:
+ *         description: Cliente no encontrado
+ */
 rutas.put('/editar',
     query("id").isInt().withMessage("El id debe ser un entero")
     .custom(async value => {
@@ -264,6 +420,25 @@ rutas.put('/editar',
     }),
     controladorCliente.editar);
 
+/**
+ * @swagger
+ * /clientes/eliminar:
+ *   delete:
+ *     summary: Eliminar un cliente
+ *     tags: [Clientes]
+ *     parameters:
+ *       - in: query
+ *         name: id
+ *         schema:
+ *           type: integer
+ *         required: true
+ *         description: ID del cliente a eliminar
+ *     responses:
+ *       200:
+ *         description: Cliente eliminado con éxito
+ *       404:
+ *         description: Cliente no encontrado
+ */
 rutas.delete('/eliminar',
     query("id").isInt().withMessage("El id debe ser un entero")
     .custom(async value => {

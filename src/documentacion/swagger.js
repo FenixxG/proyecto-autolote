@@ -5,9 +5,9 @@ const options = {
     definition: {
         openapi: '3.0.0',
         info: {
-            title: 'API-SIGVES',
+            title: 'API-AUTOLOTE',
             version: '1.0.0',
-            description: 'API del sistema de gestion de ventas al por menor y servicios'
+            description: 'API del sistema del Autolote'
         },
         servers: [
             {

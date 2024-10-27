@@ -13,6 +13,60 @@ const modeloServicio = require('./servicios/servicio');
 const modeloVenta = require('./ventas/venta');
 
 exports.CrearModelos = async () => {
+    // Relación: Ventas
+    modeloCarro.hasMany(modeloVenta);
+    modeloVenta.belongsTo(modeloCarro);
+    modeloMotocicleta.hasMany(modeloVenta);
+    modeloVenta.belongsTo(modeloMotocicleta);
+    modeloCliente.hasMany(modeloVenta);
+    modeloVenta.belongsTo(modeloCliente);
+
+    // Relación: Empleados y Ventas
+    modeloEmpleado.hasMany(modeloVenta);
+    modeloVenta.belongsTo(modeloEmpleado);
+
+    // Relación: Compras
+    modeloCarro.hasMany(modeloCompra);
+    modeloCompra.belongsTo(modeloCarro);
+    modeloMotocicleta.hasMany(modeloCompra);
+    modeloCompra.belongsTo(modeloMotocicleta);
+    modeloProveedor.hasMany(modeloCompra);
+    modeloCompra.belongsTo(modeloProveedor);
+
+    // Relación: Recibos
+    modeloVenta.hasMany(modeloRecibo);
+    modeloRecibo.belongsTo(modeloVenta);
+    modeloCliente.hasMany(modeloRecibo);
+    modeloRecibo.belongsTo(modeloCliente);
+
+    // Relación: Cotizaciones
+    modeloCarro.hasMany(modeloCotizacion);
+    modeloCotizacion.belongsTo(modeloCarro);
+    modeloMotocicleta.hasMany(modeloCotizacion);
+    modeloCotizacion.belongsTo(modeloMotocicleta);
+    modeloCliente.hasMany(modeloCotizacion);
+    modeloCotizacion.belongsTo(modeloCliente);
+
+    // Relación: Inventario
+    modeloCarro.hasMany(modeloInventario);
+    modeloInventario.belongsTo(modeloCarro);
+    modeloMotocicleta.hasMany(modeloInventario);
+    modeloInventario.belongsTo(modeloMotocicleta);
+    modeloProveedor.hasMany(modeloInventario);
+    modeloInventario.belongsTo(modeloProveedor);
+
+    // Relación: Ventas y Garantías
+    modeloVenta.hasOne(modeloGarantia);
+    modeloGarantia.belongsTo(modeloVenta);
+
+    // Relación: Ventas y Servicios
+    modeloVenta.hasMany(modeloServicio);
+    modeloServicio.belongsTo(modeloVenta);
+
+    // Relación: Cargo y Empleados
+    modeloCargo.hasMany(modeloEmpleado);
+    modeloEmpleado.belongsTo(modeloCargo);
+
     // CREANDO MODELO CARGO
     await modeloCargo.sync().then(() => {
         console.log("Modelo Cargo Creado Correctamente")

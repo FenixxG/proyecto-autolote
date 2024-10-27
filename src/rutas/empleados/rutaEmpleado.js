@@ -1,10 +1,116 @@
 const { Router } = require('express');
 const { body, query } = require('express-validator');
 const controladorEmpleado = require('../../controladores/empleados/controladorEmpleado');
-const ModeloEmpleado = require('../modelos/empleado');
+const ModeloEmpleado = require('../../modelos/empleados/empleado');
 const rutas = Router();
 rutas.get('/', controladorEmpleado.inicio);
+
+/**
+ * @swagger
+ * tags:
+ *   name: Empleados
+ *   description: Operaciones relacionadas con los empleados
+ */
+
+/**
+ * @swagger
+ * /empleados/listar:
+ *   get:
+ *     summary: Obtener lista de empleados
+ *     tags: [Empleados]
+ *     responses:
+ *       200:
+ *         description: Lista de empleados obtenida con éxito
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   id:
+ *                     type: integer
+ *                     description: ID del empleado
+ *                   identidad:
+ *                     type: string
+ *                     description: Identidad del empleado
+ *                   rtn:
+ *                     type: string
+ *                     description: RTN del empleado
+ *                   primernombre:
+ *                     type: string
+ *                     description: Primer nombre del empleado
+ *                   segundonombre:
+ *                     type: string
+ *                     description: Segundo nombre del empleado
+ *                   primerapellido:
+ *                     type: string
+ *                     description: Primer apellido del empleado
+ *                   segundoapellido:
+ *                     type: string
+ *                     description: Segundo apellido del empleado
+ *                   sueldo:
+ *                     type: number
+ *                     format: double
+ *                     description: Sueldo del empleado
+ *                   estado:
+ *                     type: string
+ *                     enum: [AC, IN, BL]
+ *                     description: Estado del empleado
+ *                   imagen:
+ *                     type: string
+ *                     description: URL de la imagen del empleado
+ */
 rutas.get('/listar', controladorEmpleado.listar);
+
+/**
+ * @swagger
+ * /empleados/guardar:
+ *   post:
+ *     summary: Registrar un nuevo empleado
+ *     tags: [Empleados]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               identidad:
+ *                 type: string
+ *                 description: Identidad del empleado
+ *               rtn:
+ *                 type: string
+ *                 description: RTN del empleado
+ *               primernombre:
+ *                 type: string
+ *                 description: Primer nombre del empleado
+ *               segundonombre:
+ *                 type: string
+ *                 description: Segundo nombre del empleado
+ *               primerapellido:
+ *                 type: string
+ *                 description: Primer apellido del empleado
+ *               segundoapellido:
+ *                 type: string
+ *                 description: Segundo apellido del empleado
+ *               sueldo:
+ *                 type: number
+ *                 format: double
+ *                 description: Sueldo del empleado
+ *               estado:
+ *                 type: string
+ *                 enum: [AC, IN, BL]
+ *                 description: Estado del empleado
+ *               imagen:
+ *                 type: string
+ *                 description: URL de la imagen del empleado
+ *     responses:
+ *       201:
+ *         description: Empleado creado exitosamente
+ *       400:
+ *         description: Error en la validación de los datos
+ */
 rutas.post('/guardar',
     body("identidad").isLength({min: 3, max : 15}).withMessage('La identidad  debe tener entre 3 a 50 caracteres').custom(async value =>{
         if(!value){
@@ -122,6 +228,63 @@ rutas.post('/guardar',
     }),
     controladorEmpleado.guardar);
 
+/**
+ * @swagger
+ * /empleados/editar:
+ *   put:
+ *     summary: Editar un empleado existente
+ *     tags: [Empleados]
+ *     parameters:
+ *       - in: query
+ *         name: id
+ *         schema:
+ *           type: integer
+ *         required: true
+ *         description: ID del empleado a editar
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               identidad:
+ *                 type: string
+ *                 description: Identidad del empleado
+ *               rtn:
+ *                 type: string
+ *                 description: RTN del empleado
+ *               primernombre:
+ *                 type: string
+ *                 description: Primer nombre del empleado
+ *               segundonombre:
+ *                 type: string
+ *                 description: Segundo nombre del empleado
+ *               primerapellido:
+ *                 type: string
+ *                 description: Primer apellido del empleado
+ *               segundoapellido:
+ *                 type: string
+ *                 description: Segundo apellido del empleado
+ *               sueldo:
+ *                 type: number
+ *                 format: double
+ *                 description: Sueldo del empleado
+ *               estado:
+ *                 type: string
+ *                 enum: [AC, IN, BL]
+ *                 description: Estado del empleado
+ *               imagen:
+ *                 type: string
+ *                 description: URL de la imagen del empleado
+ *     responses:
+ *       200:
+ *         description: Empleado actualizado exitosamente
+ *       400:
+ *         description: Error en la validación de los datos
+ *       404:
+ *         description: Empleado no encontrado
+ */
 rutas.put('/editar',
     query("id").isInt().withMessage("El id debe ser un entero")
     .custom(async value => {
@@ -254,6 +417,25 @@ rutas.put('/editar',
     }),
     controladorEmpleado.editar);
 
+/**
+ * @swagger
+ * /empleados/eliminar:
+ *   delete:
+ *     summary: Eliminar un empleado
+ *     tags: [Empleados]
+ *     parameters:
+ *       - in: query
+ *         name: id
+ *         schema:
+ *           type: integer
+ *         required: true
+ *         description: ID del empleado a eliminar
+ *     responses:
+ *       200:
+ *         description: Empleado eliminado con éxito
+ *       404:
+ *         description: Empleado no encontrado
+ */
 rutas.delete('/eliminar',
     query("id").isInt().withMessage("El id debe ser un entero")
     .custom(async value => {

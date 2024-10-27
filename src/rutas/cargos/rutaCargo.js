@@ -4,8 +4,73 @@ const controladorCargo= require('../../controladores/cargos/controladorCargo');
 const ModeloCargo = require('../../modelos/cargos/cargo');
 const rutas = Router();
 rutas.get('/', controladorCargo.inicio);
+
+/**
+ * @swagger
+ * tags:
+ *   name: Cargos
+ *   description: Operaciones relacionadas con los cargos
+ */
+
+/**
+ * @swagger
+ * /cargos/listar:
+ *   get:
+ *     summary: Obtener lista de cargos
+ *     tags: [Cargos]
+ *     responses:
+ *       200:
+ *         description: Lista de cargos obtenida con éxito
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   id:
+ *                     type: integer
+ *                     description: ID del cargo
+ *                   nombre:
+ *                     type: string
+ *                     description: Nombre del cargo
+ *                   descripcion:
+ *                     type: string
+ *                     description: Descripción del cargo
+ *                   activo:
+ *                     type: boolean
+ *                     description: Estado del cargo (activo/inactivo)
+ */
 rutas.get('/listar', controladorCargo.listar);
 
+/**
+ * @swagger
+ * /cargos/guardar:
+ *   post:
+ *     summary: Registrar un nuevo cargo
+ *     tags: [Cargos]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               nombre:
+ *                 type: string
+ *                 description: Nombre del cargo
+ *               descripcion:
+ *                 type: string
+ *                 description: Descripción del cargo
+ *               activo:
+ *                 type: boolean
+ *                 description: Estado del cargo (activo/inactivo)
+ *     responses:
+ *       201:
+ *         description: Cargo creado exitosamente
+ *       400:
+ *         description: Error en la validación de los datos
+ */
 rutas.post('/guardar',
     body("nombre").isLength({min: 3, max : 20}).withMessage('El cargo debe tener entre 3 a 20 caracteres').custom(async value =>{
         if(!value){
@@ -41,11 +106,48 @@ rutas.post('/guardar',
     }),
     controladorCargo.guardar);
 
+/**
+ * @swagger
+ * /cargos/editar:
+ *   put:
+ *     summary: Editar un cargo existente
+ *     tags: [Cargos]
+ *     parameters:
+ *       - in: query
+ *         name: id
+ *         schema:
+ *           type: integer
+ *         required: true
+ *         description: ID del cargo a editar
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               nombre:
+ *                 type: string
+ *                 description: Nombre del cargo
+ *               descripcion:
+ *                 type: string
+ *                 description: Descripción del cargo
+ *               activo:
+ *                 type: boolean
+ *                 description: Estado del cargo (activo/inactivo)
+ *     responses:
+ *       200:
+ *         description: Cargo actualizado exitosamente
+ *       400:
+ *         description: Error en la validación de los datos
+ *       404:
+ *         description: Cargo no encontrado
+ */
 rutas.put('/editar',
     query("id").isInt().withMessage("El id debe ser un entero")
     .custom(async value => {
         if (!value) {
-            throw new Error('El nombre no permite valores nulos');
+            throw new Error('El id no permite valores nulos');
         } else {
             const buscarCargo = await ModeloCargo.findOne({
                 where: {
@@ -88,6 +190,25 @@ rutas.put('/editar',
     }),
     controladorCargo.editar);
 
+/**
+ * @swagger
+ * /cargos/eliminar:
+ *   delete:
+ *     summary: Eliminar un cargo
+ *     tags: [Cargos]
+ *     parameters:
+ *       - in: query
+ *         name: id
+ *         schema:
+ *           type: integer
+ *         required: true
+ *         description: ID del cargo a eliminar
+ *     responses:
+ *       200:
+ *         description: Cargo eliminado con éxito
+ *       404:
+ *         description: Cargo no encontrado
+ */
 rutas.delete('/eliminar',
     query("id").isInt().withMessage("El id debe ser un entero")
     .custom(async value => {

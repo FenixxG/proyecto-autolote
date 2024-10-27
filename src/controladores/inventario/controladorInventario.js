@@ -1,4 +1,4 @@
-const ModeloInventario = require('../../modelos/inventarios/inventario');
+const ModeloInventario = require('../../modelos/inventario/inventario');
 const { enviar, errores} = require('../../configuracion/ayuda');
 const { validationResult } = require('express-validator');
 
