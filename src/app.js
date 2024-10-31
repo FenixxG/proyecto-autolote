@@ -10,6 +10,7 @@ require('dotenv').config();
 // Rutas
 const swaggerUi = require('swagger-ui-express');
 const swaggerSpec = require('./documentacion/swagger');
+const rutasUsuarios = require('./rutas/usuarios/rutaUsuario');
 const rutasCargos = require('./rutas/cargos/rutaCargo');
 const rutasCarros = require('./rutas/carros/rutaCarro');
 const rutasClientes = require('./rutas/clientes/rutaCliente');

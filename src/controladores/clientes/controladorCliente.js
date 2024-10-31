@@ -1,6 +1,11 @@
-const ModeloCliente = require('../../modelos/clientes/cliente');
-const { enviar, errores} = require('../../configuracion/ayuda');
 const { validationResult } = require('express-validator');
+const argon2 = require('argon2');
+const ModeloCliente = require('../../modelos/clientes/cliente');
+const ModeloClienteTelefono = require('../../modelos/clientes/clientetelefono');
+const ModeloClienteDireccion = require('../../modelos/clientes/clientedireccion');
+const ModeloUsuario = require('../../modelos/usuarios/usuario');
+const db = require('../../configuraciones/db');
+const { enviar, errores} = require('../../configuraciones/ayuda');
 
 exports.inicio = (req, res) => {
     console.log(req);

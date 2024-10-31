@@ -1,5 +1,6 @@
 const sequelize = require('sequelize');
-const db = require('../../configuracion/db');
+const db = require('../../configuraciones/db');
+const Usuario = require('../usuarios/usuario');
 
 const Empleado = db.define(
     "empleado",
@@ -41,11 +42,25 @@ const Empleado = db.define(
         imagen: {
             type: sequelize.STRING(250),
             allowNull: true,
+        },
+        email: {
+            type: sequelize.STRING(100),
+            allowNull: false,
+            unique: {
+                args: true,
+                msg: "Ya existe un empleado con este email"
+            },
+            validate: {
+                isEmail: true
+            }
         }
     },
     {
         tablename: "empleados"
     }
 );
+// Relaciones
+Usuario.hasMany(Empleado, { foreignKey: 'usuarioId' });
+Empleado.belongsTo(Usuario, { foreignKey: 'usuarioId' });
 
 module.exports = Empleado;

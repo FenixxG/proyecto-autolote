@@ -1,5 +1,5 @@
 const ModeloProveedor = require('../../modelos/proveedores/proveedor');
-const { enviar, errores} = require('../../configuracion/ayuda');
+const { enviar, errores} = require('../../configuraciones/ayuda');
 const { validationResult } = require('express-validator');
 
 exports.inicio = (req, res) => {

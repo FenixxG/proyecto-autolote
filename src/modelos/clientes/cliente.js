@@ -1,5 +1,6 @@
 const sequelize = require('sequelize');
-const db = require('../../configuracion/db');
+const db = require('../../configuraciones/db');
+const Usuario = require('../usuarios/usuario');
 
 const Cliente = db.define(
     "cliente",
@@ -30,28 +31,22 @@ const Cliente = db.define(
         },
         email: {
             type: sequelize.STRING(100),
-            allowNull: true,
+            allowNull: false,
             unique: {
                 args: true,
                 msg: "Ya existe un cliente con este email"
+            },
+            validate: {
+                isEmail: true
             }
-        },
-        telefono: {
-            type: sequelize.STRING(50),
-            allowNull: true,
-            unique: {
-                args: true,
-                msg: "Ya existe un cliente con este telefono"
-            }
-        },
-        direccion: {
-            type: sequelize.STRING(100),
-            allowNull: true
         }
     },
     {
         tablename: "clientes"
     }
 );
+// Relaciones
+Usuario.hasMany(Cliente, { foreignKey: 'usuarioId' });
+Cliente.belongsTo(Usuario, { foreignKey: 'usuarioId' });
 
 module.exports = Cliente;
