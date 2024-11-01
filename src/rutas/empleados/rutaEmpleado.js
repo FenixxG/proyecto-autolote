@@ -2,6 +2,10 @@ const { Router } = require('express');
 const { body, query } = require('express-validator');
 const controladorEmpleado = require('../../controladores/empleados/controladorEmpleado');
 const ModeloEmpleado = require('../../modelos/empleados/empleado');
+const ModeloEmpleadoTelefono = require('../../modelos/empleados/empleadotelefono');
+const ModeloEmpleadoDireccion = require('../../modelos/empleados/empleadodireccion');
+const ModeloEmpleadoCargo = require('../../modelos/empleados/empleadocargo');
+const ModeloUsuario = require('../../modelos/usuarios/usuario');
 const rutas = Router();
 //rutas.get('/', controladorEmpleado.inicio);
 
@@ -105,6 +109,40 @@ rutas.get('/listar', controladorEmpleado.getEmpleados);
  *               imagen:
  *                 type: string
  *                 description: URL de la imagen del empleado
+ *               nombre:
+ *                 type: string
+ *                 description: Nombre de usuario
+ *               correo:
+ *                 type: string
+ *                 format: email
+ *                 description: Correo electrónico
+ *               contrasena:
+ *                 type: string
+ *                 format: password
+ *                 description: Contraseña
+ *               tipoUsuario:
+ *                 type: string
+ *                 enum: [cliente, empleado]
+ *                 description: Tipo de usuario
+ *               telefonos:
+ *                 type: array
+ *                 items:
+ *                   type: object
+ *                   properties:
+ *                     telefono:
+ *                       type: string
+ *                       description: Número de teléfono
+ *               direcciones:
+ *                 type: array
+ *                 items:
+ *                   type: object
+ *                   properties:
+ *                     direccion:
+ *                       type: string
+ *                       description: Dirección del empleado
+ *               cargoId:
+ *                 type: integer
+ *                 description: ID del cargo del empleado
  *     responses:
  *       201:
  *         description: Empleado creado exitosamente
@@ -225,6 +263,38 @@ rutas.post('/guardar',
                 }
             });
         }
+    }),
+    body("tipoUsuario").notEmpty().withMessage('El tipo de usuario es requerido').isIn(['cliente', 'empleado']).withMessage('Tipo de usuario no válido'),
+    body("contrasena").isLength({ min: 6 }).withMessage('La contraseña debe tener al menos 6 caracteres').notEmpty().withMessage('La contraseña es requerida'),
+    body("nombre").optional().isLength({ min: 3, max: 100 }).withMessage('El nombre debe tener entre 3 y 100 caracteres'),
+    body("telefonos").optional().isArray().withMessage('Los teléfonos deben ser un array').custom(telefonos => {
+        if (telefonos) {
+            for (const tel of telefonos) {
+                if (!tel.telefono || tel.telefono.length < 8) {
+                    throw new Error('Cada teléfono debe tener al menos 8 caracteres');
+                }
+            }
+        }
+        return true;
+    }),
+    body("direcciones").optional().isArray().withMessage('Las direcciones deben ser un array').custom(direcciones => {
+        if (direcciones) {
+            for (const dir of direcciones) {
+                if (!dir.direccion || dir.direccion.length < 5) {
+                    throw new Error('Cada dirección debe tener al menos 5 caracteres');
+                }
+            }
+        }
+        return true;
+    }),
+    body("cargoId").optional().isInt().withMessage('El ID del cargo debe ser un número entero').custom(async value => {
+        if (value) {
+            const cargo = await ModeloEmpleadoCargo.findByPk(value);
+            if (!cargo) {
+                throw new Error('El cargo especificado no existe');
+            }
+        }
+        return true;
     }),
     controladorEmpleado.createEmpleado);
 

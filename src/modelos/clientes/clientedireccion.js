@@ -15,7 +15,7 @@ const ClienteDireccion = db.define(
         }
     },
     {
-        tablename: "clientedirecciones"
+        tableName: "clientedirecciones"
     }
 );
 

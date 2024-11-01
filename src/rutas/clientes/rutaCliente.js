@@ -52,12 +52,6 @@ const rutas = Router();
  *                   email:
  *                     type: string
  *                     description: Correo electrónico del cliente
- *                   telefono:
- *                     type: string
- *                     description: Número de teléfono del cliente
- *                   direccion:
- *                     type: string
- *                     description: Dirección del cliente
  */
 rutas.get('/listar', controladorCliente.getClientes);
 
@@ -95,12 +89,33 @@ rutas.get('/listar', controladorCliente.getClientes);
  *               email:
  *                 type: string
  *                 description: Correo electrónico del cliente
- *               telefono:
+ *               nombre:
  *                 type: string
- *                 description: Número de teléfono del cliente
- *               direccion:
+ *                 description: Nombre completo para el usuario
+ *               contrasena:
  *                 type: string
- *                 description: Dirección del cliente
+ *                 format: password
+ *                 description: Contraseña del usuario
+ *               tipoUsuario:
+ *                 type: string
+ *                 enum: [cliente, empleado]
+ *                 description: Tipo de usuario
+ *               telefonos:
+ *                 type: array
+ *                 items:
+ *                   type: object
+ *                   properties:
+ *                     telefono:
+ *                       type: string
+ *                       description: Número de teléfono del cliente
+ *               direcciones:
+ *                 type: array
+ *                 items:
+ *                   type: object
+ *                   properties:
+ *                     direccion:
+ *                       type: string
+ *                       description: Dirección del cliente
  *     responses:
  *       201:
  *         description: Cliente creado exitosamente
@@ -186,7 +201,7 @@ rutas.post('/guardar',
             });
         }
     }),
-    body("email").isLength({min: 3, max : 50}).withMessage('El email debe tener entre 3 a 50 caracteres').custom(async value =>{
+    body("email").isEmail().withMessage('El email debe tener un formato válido').isLength({min: 3, max : 50}).withMessage('El email debe tener entre 3 a 50 caracteres').custom(async value =>{
         if(!value){
             throw new Error('El email no permite valores nulos');
         }
@@ -201,30 +216,11 @@ rutas.post('/guardar',
             }
         }
     }),
-    body("telefono").isLength({min: 3, max : 50}).withMessage('El telefono debe tener entre 3 a 50 caracteres').custom(async value =>{
-        if(!value){
-            throw new Error('El telefono no permite valores nulos');
-        }
-        else{
-            const buscarCliente = await ModeloCliente.findOne({
-                where: {
-                    telefono: value
-                }
-            });
-        }
-    }),
-    body("direccion").isLength({min: 3, max : 50}).withMessage('La direccion debe tener entre 3 a 50 caracteres').custom(async value =>{
-        if(!value){
-            throw new Error('La direccion no permite valores nulos');
-        }
-        else{
-            const buscarCliente = await ModeloCliente.findOne({
-                where: {
-                    direccion: value
-                }
-            });
-        }
-    }),
+    body("tipoUsuario").notEmpty().withMessage('El tipo de usuario es requerido').isIn(['cliente', 'empleado']).withMessage('Tipo de usuario no válido'),
+    body("contrasena").isLength({ min: 6 }).withMessage('La contraseña debe tener al menos 6 caracteres').notEmpty().withMessage('La contraseña es requerida'),
+    body("nombre").optional().isLength({ min: 3, max: 100 }).withMessage('El nombre debe tener entre 3 y 100 caracteres'),
+    body("telefonos").isArray().withMessage('Los teléfonos deben ser un array'),
+    body("direcciones").isArray().withMessage('Las direcciones deben ser un array'),
     controladorCliente.createCliente);
 
 /**
@@ -268,12 +264,33 @@ rutas.post('/guardar',
  *               email:
  *                 type: string
  *                 description: Correo electrónico del cliente
- *               telefono:
+ *               nombre:
  *                 type: string
- *                 description: Número de teléfono del cliente
- *               direccion:
+ *                 description: Nombre completo para el usuario
+ *               contrasena:
  *                 type: string
- *                 description: Dirección del cliente
+ *                 format: password
+ *                 description: Contraseña del usuario
+ *               tipoUsuario:
+ *                 type: string
+ *                 enum: [cliente, empleado]
+ *                 description: Tipo de usuario
+ *               telefonos:
+ *                 type: array
+ *                 items:
+ *                   type: object
+ *                   properties:
+ *                     telefono:
+ *                       type: string
+ *                       description: Número de teléfono del cliente
+ *               direcciones:
+ *                 type: array
+ *                 items:
+ *                   type: object
+ *                   properties:
+ *                     direccion:
+ *                       type: string
+ *                       description: Dirección del cliente
  *     responses:
  *       200:
  *         description: Cliente actualizado exitosamente
@@ -391,33 +408,11 @@ rutas.put('/editar',
             }
         }
     }),
-    body("telefono").isLength({min: 3, max : 50}).withMessage('El telefono debe tener entre 3 a 50 caracteres').custom(async value =>{
-        if(!value){
-            throw new Error('El telefono no permite valores nulos');
-        }
-        else{
-            const buscarCliente = await ModeloCliente.findOne({
-                where: {
-                    telefono: value
-                }
-            });
-            if(buscarCliente){
-                throw new Error('El telefono del cliente ya existe');
-            }
-        }
-    }),
-    body("direccion").isLength({min: 3, max : 50}).withMessage('La direccion debe tener entre 3 a 50 caracteres').custom(async value =>{
-        if(!value){
-            throw new Error('La direccion no permite valores nulos');
-        }
-        else{
-            const buscarCliente = await ModeloCliente.findOne({
-                where: {
-                    direccion: value
-                }
-            });
-        }
-    }),
+    body("tipoUsuario").notEmpty().withMessage('El tipo de usuario es requerido').isIn(['cliente', 'admin', 'empleado']).withMessage('Tipo de usuario no válido'),
+    body("contrasena").isLength({ min: 6 }).withMessage('La contraseña debe tener al menos 6 caracteres').notEmpty().withMessage('La contraseña es requerida'),
+    body("nombre").optional().isLength({ min: 3, max: 100 }).withMessage('El nombre debe tener entre 3 y 100 caracteres'),
+    body("telefonos").isArray().withMessage('Los teléfonos deben ser un array'),
+    body("direcciones").isArray().withMessage('Las direcciones deben ser un array'),
     controladorCliente.updateCliente);
 
 /**

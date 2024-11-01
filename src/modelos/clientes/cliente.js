@@ -41,7 +41,7 @@ const Cliente = db.define(
         }
     },
     {
-        tablename: "clientes"
+        tableName: "clientes"
     }
 );
 

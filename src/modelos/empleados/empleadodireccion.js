@@ -15,7 +15,7 @@ const EmpleadoDireccion = db.define(
         }
     },
     {
-        tablename: "empleadodirecciones"
+        tableName: "empleadodirecciones"
     }
 );
 

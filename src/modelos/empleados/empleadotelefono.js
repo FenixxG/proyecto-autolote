@@ -4,13 +4,13 @@ const db = require('../../configuraciones/db');
 const EmpleadoTelefono = db.define(
     "empleadotelefono",
     {
-        numero:{
+        telefono:{
             type: sequelize.STRING(15),
             allowNull: false,
         },
     },
     {
-        tablename: "empleadotelefonos"
+        tableName: "empleadotelefonos"
     }
 );
 

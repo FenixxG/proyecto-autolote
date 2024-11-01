@@ -183,9 +183,9 @@ rutas.put('/editar',
             });
         }
     }),
-    body("activo").isBoolean({min: 1}).withMessage('El anio tiene que ser numerico').custom(async value =>{
+    body("activo").isBoolean().withMessage('El activo tiene que ser numerico').custom(async value =>{
         if(!value){
-            throw new Error('El anio no permite valores nulos');
+            throw new Error('El activo no permite valores nulos');
         }
     }),
     controladorEmpleadoCargo.editar);
