@@ -15,9 +15,10 @@ const rutas = Router();
 
 rutas.get('/listar', controladorUsuario.getUsuariosClientes);
 
+rutas.post('/recuperar', controladorUsuario.recuperarContrasena);
 
+rutas.post('/actualizar',controladorUsuario.updateContrasena);
 
-
-
+rutas.post('/iniciarsesion',controladorUsuario.InicioSesion);
 
 module.exports = rutas;

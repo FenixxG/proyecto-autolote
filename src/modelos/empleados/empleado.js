@@ -42,7 +42,7 @@ const Empleado = db.define(
             type: sequelize.STRING(250),
             allowNull: true,
         },
-        email: {
+        correo: {
             type: sequelize.STRING(100),
             allowNull: false,
             unique: {

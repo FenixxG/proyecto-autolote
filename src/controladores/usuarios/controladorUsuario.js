@@ -15,7 +15,7 @@ const crypto = require('crypto');
 const { getToken } = require('../../configuraciones/passport');
 
 const generarPin = () => {
-    return crypto.randomBytes(3).toString('hex').split(0,6);
+    return crypto.randomBytes(3).toString('hex').slice(0, 6);
 }
 
 // Obtener todos los usuarios de los clientes
@@ -182,9 +182,7 @@ exports.recuperarContrasena = async (req, res) => {
 
         const usuario = await ModeloUsuario.findOne({
             where: {
-                [Op.or]: [
-                    { correo: { [Op.like]: correo } }
-                ]
+                correo
             }
         });
         if (!usuario) {
@@ -196,11 +194,12 @@ exports.recuperarContrasena = async (req, res) => {
             para: correo,
             asunto: 'Recuperacion de contraseña',
             descripcion: 'Correo enviado para la recuperacion de la contraseña',
-            html: '<h1>PIN: '+ nuevoPin +'</h1><p>Este es el PIN generado automaticamente</p>'
+            html: '<h1>PIN: ' + nuevoPin + '</h1><p>Este es el PIN generado automaticamente</p>'
         })
         res.json({ message: 'Correo enviado correctamente' });
     } catch (error) {
         res.status(500).json({ error: 'Error al enviar el correo' });
+        console.log(error);
     }
 };
 
@@ -216,37 +215,37 @@ exports.InicioSesion = async (req, res) => {
         const { login, contrasena } = req.body;
 
         const usuario = await ModeloUsuario.findOne({
-            attributes: ['nombre', 'tipoUsuario', 'correo', 'contrasena'],
+            atributes: ['nombre', 'tipoUsuario', 'correo', 'contrasena'],
             include: [
                 {
                     model: ModeloCliente,
-                    attributes: ['primerNombre', 'segundoNombre', 'primerApellido', 'segundoApellido', 'imagen'],
+                    atributes: ['primernombre', 'segundonombre', 'primerapellido', 'segundoapellido', 'imagen'],
                     include: [
                         {
                             model: ModeloClienteTelefono,
-                            attributes: ['telefono']
+                            atributes: ['telefono']
                         },
                         {
                             model: ModeloClienteDireccion,
-                            attributes: ['direccion', 'longitud', 'latitud']
+                            atributes: ['direccion', 'longitud', 'latitud']
                         }
                     ]
                 },
                 {
                     model: ModeloEmpleado,
-                    attributes: ['primerNombre', 'segundoNombre', 'primerApellido', 'segundoApellido', 'imagen'],
+                    atributes: ['primernombre', 'segundonombre', 'primerapellido', 'segundoapellido', 'imagen'],
                     include: [
                         {
                             model: ModeloEmpleadoCargo,
-                            attributes: ['nombre_cargo']
+                            atributes: ['nombre']
                         },
                         {
                             model: ModeloEmpleadoTelefono,
-                            attributes: ['telefono']
+                            atributes: ['telefono']
                         },
                         {
                             model: ModeloEmpleadoDireccion,
-                            attributes: ['direccion', 'longitud', 'latitud']
+                            atributes: ['direccion', 'longitud', 'latitud']
                         }
                     ]
                 }
@@ -263,7 +262,7 @@ exports.InicioSesion = async (req, res) => {
             return res.status(404).json({ error: 'Usuario o contraseña incorrecto' });
         }
         else {
-            if(await argon2.verify(usuario.contrasena, contrasena)) {
+            if (await argon2.verify(usuario.contrasena, contrasena)) {
                 const Usuario = {
                     login: usuario.nombre,
                     tipo: usuario.tipoUsuario,
@@ -271,8 +270,9 @@ exports.InicioSesion = async (req, res) => {
                     datoPersonales: usuario.tipoUsuario == 'Cliente' ? usuario.cliente : usuario.empleado
                 };
                 const Token = getToken({ id: usuario.id });
-                return res.json({ Token, Usuario});
+                return res.json({ Token, Usuario });
             } else {
+                console.log(error);
                 return res.status(404).json({ error: 'Usuario o contraseña es incorrecto' });
             }
         }

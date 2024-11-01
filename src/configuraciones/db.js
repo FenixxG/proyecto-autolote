@@ -1,5 +1,5 @@
 const sequelize = require
-('sequelize');
+    ('sequelize');
 const {
     NOMBRE_DB,
     USUARIO_DB,
@@ -17,6 +17,7 @@ const db = new sequelize(
         host: URL_DB,
         dialect: DIALECT_DB,
         port: PORT_DB,
+        logging: false,
     }
 );
 

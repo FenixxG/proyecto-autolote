@@ -72,36 +72,31 @@ rutas.get('/listar', controladorEmpleadoCargo.listar);
  *         description: Error en la validación de los datos
  */
 rutas.post('/guardar',
-    body("nombre").isLength({min: 3, max : 20}).withMessage('El cargo debe tener entre 3 a 20 caracteres').custom(async value =>{
-        if(!value){
+    body("nombre").isLength({ min: 3, max: 20 }).withMessage('El cargo debe tener entre 3 a 20 caracteres').custom(async value => {
+        if (!value) {
             throw new Error('El nombre no permite valores nulos');
         }
-        else{
+        else {
             const buscarCargo = await ModeloEmpleadoCargo.findOne({
                 where: {
                     nombre: value
                 }
             });
-            if(buscarCargo){
+            if (buscarCargo) {
                 throw new Error('El nombre del cargo ya existe');
             }
         }
     }),
-    body("descripcion").isLength({min: 1, max : 50}).withMessage('La descripcion debe tener entre 3 a 50 caracteres').custom(async value =>{
-        if(!value){
+    body("descripcion").isLength({ min: 1, max: 50 }).withMessage('La descripcion debe tener entre 3 a 50 caracteres').custom(async value => {
+        if (!value) {
             throw new Error('La descripcion no permite valores nulos');
         }
-        else{
+        else {
             const buscarCargo = await ModeloEmpleadoCargo.findOne({
                 where: {
                     descripcion: value
                 }
             });
-        }
-    }),
-    body("activo").isBoolean({min: 4}).withMessage('El activo tiene que ser numerico').custom(async value =>{
-        if(!value){
-            throw new Error('El activo no permite valores nulos');
         }
     }),
     controladorEmpleadoCargo.guardar);
@@ -145,25 +140,25 @@ rutas.post('/guardar',
  */
 rutas.put('/editar',
     query("id").isInt().withMessage("El id debe ser un entero")
-    .custom(async value => {
-        if (!value) {
-            throw new Error('El id no permite valores nulos');
-        } else {
-            const buscarCargo = await ModeloEmpleadoCargo.findOne({
-                where: {
-                    id: value
+        .custom(async value => {
+            if (!value) {
+                throw new Error('El id no permite valores nulos');
+            } else {
+                const buscarCargo = await ModeloEmpleadoCargo.findOne({
+                    where: {
+                        id: value
+                    }
+                });
+                if (!buscarCargo) {
+                    throw new Error('El id del cargo no existe');
                 }
-            });
-            if (!buscarCargo) {
-                throw new Error('El id del cargo no existe');
             }
-        }
-    }),
-    body("nombre").isLength({min: 3, max : 50}).withMessage('El nombre debe tener entre 3 a 50 caracteres').custom(async value =>{
-        if(!value){
+        }),
+    body("nombre").isLength({ min: 3, max: 50 }).withMessage('El nombre debe tener entre 3 a 50 caracteres').custom(async value => {
+        if (!value) {
             throw new Error('El nombre no permite valores nulos');
         }
-        else{
+        else {
             const buscarCargo = await ModeloEmpleadoCargo.findOne({
                 where: {
                     nombre: value
@@ -171,11 +166,11 @@ rutas.put('/editar',
             });
         }
     }),
-    body("descripcion").isLength({min: 1, max : 50}).withMessage('La descripcion debe tener entre 1 a 50 caracteres').custom(async value =>{
-        if(!value){
+    body("descripcion").isLength({ min: 1, max: 50 }).withMessage('La descripcion debe tener entre 1 a 50 caracteres').custom(async value => {
+        if (!value) {
             throw new Error('La descripcion no permite valores nulos');
         }
-        else{
+        else {
             const buscarCargo = await ModeloEmpleadoCargo.findOne({
                 where: {
                     descripcion: value
@@ -183,8 +178,8 @@ rutas.put('/editar',
             });
         }
     }),
-    body("activo").isBoolean().withMessage('El activo tiene que ser numerico').custom(async value =>{
-        if(!value){
+    body("activo").isBoolean().withMessage('El activo tiene que ser numerico').custom(async value => {
+        if (!value) {
             throw new Error('El activo no permite valores nulos');
         }
     }),
@@ -211,19 +206,19 @@ rutas.put('/editar',
  */
 rutas.delete('/eliminar',
     query("id").isInt().withMessage("El id debe ser un entero")
-    .custom(async value => {
-        if (!value) {
-            throw new Error('El nombre no permite valores nulos');
-        } else {
-            const buscarCargo = await ModeloEmpleadoCargo.findOne({
-                where: {
-                    id: value
+        .custom(async value => {
+            if (!value) {
+                throw new Error('El nombre no permite valores nulos');
+            } else {
+                const buscarCargo = await ModeloEmpleadoCargo.findOne({
+                    where: {
+                        id: value
+                    }
+                });
+                if (!buscarCargo) {
+                    throw new Error('El id del cargo no existe');
                 }
-            });
-            if (!buscarCargo) {
-                throw new Error('El id del cargo no existe');
             }
-        }
-    }),
+        }),
     controladorEmpleadoCargo.eliminar);
 module.exports = rutas;

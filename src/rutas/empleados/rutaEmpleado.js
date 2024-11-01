@@ -150,143 +150,45 @@ rutas.get('/listar', controladorEmpleado.getEmpleados);
  *         description: Error en la validación de los datos
  */
 rutas.post('/guardar',
-    body("identidad").isLength({min: 3, max : 15}).withMessage('La identidad  debe tener entre 3 a 50 caracteres').custom(async value =>{
-        if(!value){
+    body("identidad").isLength({ min: 3, max: 15 }).withMessage('La identidad  debe tener entre 3 a 50 caracteres').custom(async value => {
+        if (!value) {
             throw new Error('La identidad no permite valores nulos');
         }
-        else{
+        else {
             const buscarEmpleado = await ModeloEmpleado.findOne({
                 where: {
                     identidad: value
                 }
             });
-            if(buscarEmpleado){
+            if (buscarEmpleado) {
                 throw new Error('La identidad del empleado ya existe');
             }
         }
     }),
-    body("rtn").isLength({min: 3, max : 15}).withMessage('El rtn debe tener entre 3 a 50 caracteres').custom(async value =>{
-        if(!value){
+    body("rtn").isLength({ min: 3, max: 15 }).withMessage('El rtn debe tener entre 3 a 50 caracteres').custom(async value => {
+        if (!value) {
             throw new Error('El rtn no permite valores nulos');
         }
-        else{
+        else {
             const buscarEmpleado = await ModeloEmpleado.findOne({
                 where: {
                     rtn: value
                 }
             });
-            if(buscarEmpleado){
+            if (buscarEmpleado) {
                 throw new Error('El rtn del empleado ya existe');
             }
         }
     }),
-    body("primernombre").isLength({min: 3, max : 50}).withMessage('El primernombre debe tener entre 3 a 50 caracteres').custom(async value =>{
-        if(!value){
-            throw new Error('El primernombrembre no permite valores nulos');
-        }
-        else{
-            const buscarEmpleado = await ModeloEmpleado.findOne({
-                where: {
-                    primernombre: value
-                }
-            });
-        }
-    }),
-    body("segundonombre").isLength({min: 3, max : 50}).withMessage('El segundonombre debe tener entre 3 a 50 caracteres').custom(async value =>{
-        if(!value){
-            throw new Error('El segundonombre no permite valores nulos');
-        }
-        else{
-            const buscarEmpleado = await ModeloEmpleado.findOne({
-                where: {
-                    segundonombre: value
-                }
-            });
-        }
-    }),
-    body("segundonombre").isLength({min: 3, max : 50}).withMessage('El segundonombre debe tener entre 3 a 50 caracteres').custom(async value =>{
-        if(!value){
-            throw new Error('El segundonombre no permite valores nulos');
-        }
-        else{
-            const buscarEmpleado = await ModeloEmpleado.findOne({
-                where: {
-                    primerapellido: value
-                }
-            });
-        }
-    }),
-    body("segundoapellido").isLength({min: 3, max : 50}).withMessage('El segundoapellido debe tener entre 3 a 50 caracteres').custom(async value =>{
-        if(!value){
-            throw new Error('El nombre no permite valores nulos');
-        }
-        else{
-            const buscarEmpleado = await ModeloEmpleado.findOne({
-                where: {
-                    segundoapellido: value
-                }
-            });
-        }
-    }),
-    body("sueldo").isDecimal({min: 1}).withMessage('El sueldo minimo un valor').custom(async value =>{
-        if(!value){
-            throw new Error('El sueldo debe tener minimo un valor');
-        }
-        else{
-            const buscarEmpleado = await ModeloEmpleado.findOne({
-                where: {
-                    sueldo: value
-                }
-            });
-        }
-    }),
-    body("estado").isString({min: 3, max : 50}).withMessage('El estado debe ser AC, IN o BL').custom(async value =>{
-        if(!value){
-            throw new Error('El estado debe ser AC, IN o BL');
-        }
-        else{
-            const buscarEmpleado = await ModeloEmpleado.findOne({
-                where: {
-                    estado: value
-                }
-            });
-        }
-    }),
-    body("imagen").isLength({min: 3, max : 50}).withMessage('La imagen debe tener entre 3 a 50 caracteres').custom(async value =>{
-        if(!value){
-            throw new Error('La imagen no permite valores nulos');
-        }
-        else{
-            const buscarEmpleado = await ModeloEmpleado.findOne({
-                where: {
-                    imagen: value
-                }
-            });
-        }
-    }),
+    body("primernombre").isLength({ min: 3, max: 50 }).withMessage('El primernombre debe tener entre 3 a 50 caracteres'),
+    body("primerapellido").isLength({ min: 3, max: 50 }).withMessage('El segundonombre debe tener entre 3 a 50 caracteres'),
+    body("sueldo").isDecimal({ min: 1 }).withMessage('El sueldo minimo un valor'),
+    body("estado").isString({ min: 3, max: 50 }).withMessage('El estado debe ser AC, IN o BL'),
     body("tipoUsuario").notEmpty().withMessage('El tipo de usuario es requerido').isIn(['cliente', 'empleado']).withMessage('Tipo de usuario no válido'),
     body("contrasena").isLength({ min: 6 }).withMessage('La contraseña debe tener al menos 6 caracteres').notEmpty().withMessage('La contraseña es requerida'),
     body("nombre").optional().isLength({ min: 3, max: 100 }).withMessage('El nombre debe tener entre 3 y 100 caracteres'),
-    body("telefonos").optional().isArray().withMessage('Los teléfonos deben ser un array').custom(telefonos => {
-        if (telefonos) {
-            for (const tel of telefonos) {
-                if (!tel.telefono || tel.telefono.length < 8) {
-                    throw new Error('Cada teléfono debe tener al menos 8 caracteres');
-                }
-            }
-        }
-        return true;
-    }),
-    body("direcciones").optional().isArray().withMessage('Las direcciones deben ser un array').custom(direcciones => {
-        if (direcciones) {
-            for (const dir of direcciones) {
-                if (!dir.direccion || dir.direccion.length < 5) {
-                    throw new Error('Cada dirección debe tener al menos 5 caracteres');
-                }
-            }
-        }
-        return true;
-    }),
+    body("telefonos").optional().isArray().withMessage('Los teléfonos deben ser un array'),
+    body("direcciones").optional().isArray().withMessage('Las direcciones deben ser un array'),
     body("cargoId").optional().isInt().withMessage('El ID del cargo debe ser un número entero').custom(async value => {
         if (value) {
             const cargo = await ModeloEmpleadoCargo.findByPk(value);
@@ -357,67 +259,67 @@ rutas.post('/guardar',
  */
 rutas.put('/editar',
     query("id").isInt().withMessage("El id debe ser un entero")
-    .custom(async value => {
-        if (!value) {
-            throw new Error('El id no permite valores nulos');
-        } else {
-            const buscarEmpleado = await ModeloEmpleado.findOne({
-                where: {
-                    id: value
+        .custom(async value => {
+            if (!value) {
+                throw new Error('El id no permite valores nulos');
+            } else {
+                const buscarEmpleado = await ModeloEmpleado.findOne({
+                    where: {
+                        id: value
+                    }
+                });
+                if (!buscarEmpleado) {
+                    throw new Error('El id del empleado no existe');
                 }
-            });
-            if (!buscarEmpleado) {
-                throw new Error('El id del empleado no existe');
             }
-        }
-    }),
-    body("identidad").isLength({min: 3, max : 15}).withMessage('La identidad  debe tener entre 3 a 50 caracteres').custom(async value =>{
-        if(!value){
+        }),
+    body("identidad").isLength({ min: 3, max: 15 }).withMessage('La identidad  debe tener entre 3 a 50 caracteres').custom(async value => {
+        if (!value) {
             throw new Error('La identidad no permite valores nulos');
         }
-        else{
+        else {
             const buscarEmpleado = await ModeloEmpleado.findOne({
                 where: {
                     identidad: value
                 }
             });
-            if(buscarEmpleado){
+            if (buscarEmpleado) {
                 throw new Error('La identidad del empleado ya existe');
             }
         }
     }),
-    body("rtn").isLength({min: 3, max : 15}).withMessage('El rtn debe tener entre 3 a 50 caracteres').custom(async value =>{
-        if(!value){
+    body("rtn").isLength({ min: 3, max: 15 }).withMessage('El rtn debe tener entre 3 a 50 caracteres').custom(async value => {
+        if (!value) {
             throw new Error('El rtn no permite valores nulos');
         }
-        else{
+        else {
             const buscarEmpleado = await ModeloEmpleado.findOne({
                 where: {
                     rtn: value
                 }
             });
-            if(buscarEmpleado){
+            if (buscarEmpleado) {
                 throw new Error('El rtn del empleado ya existe');
             }
         }
     }),
-    body("primernombre").isLength({min: 3, max : 50}).withMessage('El primernombre debe tener entre 3 a 50 caracteres').custom(async value =>{
-        if(!value){
+    body("primernombre").isLength({ min: 3, max: 50 }).withMessage('El primernombre debe tener entre 3 a 50 caracteres').custom(async value => {
+        if (!value) {
             throw new Error('El primernombre no permite valores nulos');
         }
-        else{
+        else {
             const buscarEmpleado = await ModeloEmpleado.findOne({
                 where: {
                     primernombre: value
                 }
             });
-            }
+        }
     }),
-    body("segundonombre").isLength({min: 3, max : 50}).withMessage('El segundonombre debe tener entre 3 a 50 caracteres').custom(async value =>{
-        if(!value){
+    body("segundonombre").isLength({ min: 3, max: 50 }).withMessage('El segundonombre debe tener entre 3 a 50 caracteres').custom(async value => {
+        if (!value) {
             throw new Error('El segundonombre no permite valores nulos');
         }
-        else{
+        else {
             const buscarEmpleado = await ModeloEmpleado.findOne({
                 where: {
                     segundonombre: value
@@ -425,11 +327,11 @@ rutas.put('/editar',
             });
         }
     }),
-    body("segundonombre").isLength({min: 3, max : 50}).withMessage('El segundonombre debe tener entre 3 a 50 caracteres').custom(async value =>{
-        if(!value){
+    body("segundonombre").isLength({ min: 3, max: 50 }).withMessage('El segundonombre debe tener entre 3 a 50 caracteres').custom(async value => {
+        if (!value) {
             throw new Error('El segundonombre no permite valores nulos');
         }
-        else{
+        else {
             const buscarEmpleado = await ModeloEmpleado.findOne({
                 where: {
                     primerapellido: value
@@ -437,11 +339,11 @@ rutas.put('/editar',
             });
         }
     }),
-    body("segundoapellido").isLength({min: 3, max : 50}).withMessage('El segundoapellido debe tener entre 3 a 50 caracteres').custom(async value =>{
-        if(!value){
+    body("segundoapellido").isLength({ min: 3, max: 50 }).withMessage('El segundoapellido debe tener entre 3 a 50 caracteres').custom(async value => {
+        if (!value) {
             throw new Error('El nombre no permite valores nulos');
         }
-        else{
+        else {
             const buscarEmpleado = await ModeloEmpleado.findOne({
                 where: {
                     segundoapellido: value
@@ -449,11 +351,11 @@ rutas.put('/editar',
             });
         }
     }),
-    body("sueldo").isDecimal({min: 1}).withMessage('El sueldo minimo un valor').custom(async value =>{
-        if(!value){
+    body("sueldo").isDecimal({ min: 1 }).withMessage('El sueldo minimo un valor').custom(async value => {
+        if (!value) {
             throw new Error('El sueldo debe tener minimo un valor');
         }
-        else{
+        else {
             const buscarEmpleado = await ModeloEmpleado.findOne({
                 where: {
                     sueldo: value
@@ -461,11 +363,11 @@ rutas.put('/editar',
             });
         }
     }),
-    body("estado").isLength({min: 3, max : 50}).withMessage('El estado debe ser AC, IN o BL').custom(async value =>{
-        if(!value){
+    body("estado").isLength({ min: 3, max: 50 }).withMessage('El estado debe ser AC, IN o BL').custom(async value => {
+        if (!value) {
             throw new Error('El estado debe ser AC, IN o BL');
         }
-        else{
+        else {
             const buscarEmpleado = await ModeloEmpleado.findOne({
                 where: {
                     estado: value
@@ -473,11 +375,11 @@ rutas.put('/editar',
             });
         }
     }),
-    body("imagen").isLength({min: 3, max : 50}).withMessage('La imagen debe tener entre 3 a 50 caracteres').custom(async value =>{
-        if(!value){
+    body("imagen").isLength({ min: 3, max: 50 }).withMessage('La imagen debe tener entre 3 a 50 caracteres').custom(async value => {
+        if (!value) {
             throw new Error('La imagen no permite valores nulos');
         }
-        else{
+        else {
             const buscarEmpleado = await ModeloEmpleado.findOne({
                 where: {
                     imagen: value
@@ -508,19 +410,19 @@ rutas.put('/editar',
  */
 rutas.delete('/eliminar',
     query("id").isInt().withMessage("El id debe ser un entero")
-    .custom(async value => {
-        if (!value) {
-            throw new Error('El id no permite valores nulos');
-        } else {
-            const buscarEmpleado = await ModeloEmpleado.findOne({
-                where: {
-                    id: value
+        .custom(async value => {
+            if (!value) {
+                throw new Error('El id no permite valores nulos');
+            } else {
+                const buscarEmpleado = await ModeloEmpleado.findOne({
+                    where: {
+                        id: value
+                    }
+                });
+                if (!buscarEmpleado) {
+                    throw new Error('El id del empleado no existe');
                 }
-            });
-            if (!buscarEmpleado) {
-                throw new Error('El id del empleado no existe');
             }
-        }
-    }),
+        }),
     controladorEmpleado.deleteEmpleado);
 module.exports = rutas;

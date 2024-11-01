@@ -78,6 +78,7 @@ exports.createCliente = async (req, res) => {
         console.error(error);
         await t.rollback();
         res.status(500).json({ error: 'Error al crear el cliente' });
+        console.log(error);
     }
 };
 

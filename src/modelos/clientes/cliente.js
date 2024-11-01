@@ -28,7 +28,7 @@ const Cliente = db.define(
             type: sequelize.STRING(50),
             allowNull: true,
         },
-        email: {
+        correo: {
             type: sequelize.STRING(100),
             allowNull: false,
             unique: {
