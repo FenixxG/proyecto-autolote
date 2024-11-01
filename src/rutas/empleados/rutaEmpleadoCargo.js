@@ -1,9 +1,9 @@
 const { Router } = require('express');
 const { body, query } = require('express-validator');
-const controladorCargo= require('../../controladores/cargos/controladorCargo');
-const ModeloCargo = require('../../modelos/cargos/cargo');
+const controladorEmpleadoCargo = require('../../controladores/empleados/controladorEmpleadoCargo');
+const ModeloEmpleadoCargo = require('../../modelos/empleados/empleadocargo');
 const rutas = Router();
-rutas.get('/', controladorCargo.inicio);
+rutas.get('/', controladorEmpleadoCargo.inicio);
 
 /**
  * @swagger
@@ -41,7 +41,7 @@ rutas.get('/', controladorCargo.inicio);
  *                     type: boolean
  *                     description: Estado del cargo (activo/inactivo)
  */
-rutas.get('/listar', controladorCargo.listar);
+rutas.get('/listar', controladorEmpleadoCargo.listar);
 
 /**
  * @swagger
@@ -77,7 +77,7 @@ rutas.post('/guardar',
             throw new Error('El nombre no permite valores nulos');
         }
         else{
-            const buscarCargo = await ModeloCargo.findOne({
+            const buscarCargo = await ModeloEmpleadoCargo.findOne({
                 where: {
                     nombre: value
                 }
@@ -92,7 +92,7 @@ rutas.post('/guardar',
             throw new Error('La descripcion no permite valores nulos');
         }
         else{
-            const buscarCargo = await ModeloCargo.findOne({
+            const buscarCargo = await ModeloEmpleadoCargo.findOne({
                 where: {
                     descripcion: value
                 }
@@ -104,7 +104,7 @@ rutas.post('/guardar',
             throw new Error('El activo no permite valores nulos');
         }
     }),
-    controladorCargo.guardar);
+    controladorEmpleadoCargo.guardar);
 
 /**
  * @swagger
@@ -149,7 +149,7 @@ rutas.put('/editar',
         if (!value) {
             throw new Error('El id no permite valores nulos');
         } else {
-            const buscarCargo = await ModeloCargo.findOne({
+            const buscarCargo = await ModeloEmpleadoCargo.findOne({
                 where: {
                     id: value
                 }
@@ -164,7 +164,7 @@ rutas.put('/editar',
             throw new Error('El nombre no permite valores nulos');
         }
         else{
-            const buscarCargo = await ModeloCargo.findOne({
+            const buscarCargo = await ModeloEmpleadoCargo.findOne({
                 where: {
                     nombre: value
                 }
@@ -176,7 +176,7 @@ rutas.put('/editar',
             throw new Error('La descripcion no permite valores nulos');
         }
         else{
-            const buscarCargo = await ModeloCargo.findOne({
+            const buscarCargo = await ModeloEmpleadoCargo.findOne({
                 where: {
                     descripcion: value
                 }
@@ -188,7 +188,7 @@ rutas.put('/editar',
             throw new Error('El anio no permite valores nulos');
         }
     }),
-    controladorCargo.editar);
+    controladorEmpleadoCargo.editar);
 
 /**
  * @swagger
@@ -215,7 +215,7 @@ rutas.delete('/eliminar',
         if (!value) {
             throw new Error('El nombre no permite valores nulos');
         } else {
-            const buscarCargo = await ModeloCargo.findOne({
+            const buscarCargo = await ModeloEmpleadoCargo.findOne({
                 where: {
                     id: value
                 }
@@ -225,5 +225,5 @@ rutas.delete('/eliminar',
             }
         }
     }),
-    controladorCargo.eliminar);
+    controladorEmpleadoCargo.eliminar);
 module.exports = rutas;

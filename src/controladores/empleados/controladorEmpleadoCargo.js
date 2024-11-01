@@ -1,4 +1,4 @@
-const ModeloClienteDireccion = require('../../modelos/clientes/clientedireccion');
+const ModeloEmpleadoCargo = require('../../modelos/empleados/empleadocargo');
 const { enviar, errores} = require('../../configuraciones/ayuda');
 const { validationResult } = require('express-validator');
 
@@ -14,7 +14,7 @@ exports.listar = async(req, res) => {
         msj: [],
     }
     try {
-        await ModeloClienteDireccion.findAll()
+        await ModeloEmpleadoCargo.findAll()
         .then(((data)=>{
             contenido.tipo = 1;
             contenido.datos = data;
@@ -22,7 +22,7 @@ exports.listar = async(req, res) => {
         }))
         .catch((er) => {
             contenido.tipo = 0;
-            contenido.msj = "ERROR AL CARGAR LOS DATOS DEL CLIENTE DIRECCION";
+            contenido.msj = "ERROR AL CARGAR LOS DATOS DEL CARGO";
             enviar(200, contenido, res);
         })
     } catch (error) {
@@ -47,7 +47,7 @@ exports.guardar = async(req, res) => {
     }
     else{
         try {
-            await ModeloClienteDireccion.create({...req.body}) // CON ... SE PASAN TODOS LOS DATOS DEL REQ.BODY
+            await ModeloEmpleadoCargo.create({...req.body}) // CON ... SE PASAN TODOS LOS DATOS DEL REQ.BODY
             .then((data)=>{
                 contenido.tipo = 1;
                 contenido.datos = data;
@@ -82,7 +82,7 @@ exports.editar = async(req, res) => {
     }
     else{
         try {
-            await ModeloClienteDireccion.update(
+            await ModeloEmpleadoCargo.update(
                 ({...req.body}),
                 {where: {id: id}})
             .then((data)=>{
@@ -119,7 +119,7 @@ exports.eliminar = async(req, res) => {
     }
     else{
         try {
-            await ModeloClienteDireccion.destroy({where: {id: id}})
+            await ModeloEmpleadoCargo.destroy({where: {id: id}})
             .then((data)=>{
                 contenido.tipo = 1;
                 contenido.datos = data;

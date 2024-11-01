@@ -1,8 +1,8 @@
 const sequelize = require('sequelize');
 const db = require('../../configuraciones/db');
 
-const ClienteDireccion = db.define(
-    "clientedireccion",
+const EmpleadoDireccion = db.define(
+    "empleadodireccion",
     {
         direccion: {
             type: sequelize.TEXT,
@@ -15,8 +15,8 @@ const ClienteDireccion = db.define(
         }
     },
     {
-        tablename: "clientedirecciones"
+        tablename: "empleadodirecciones"
     }
 );
 
-module.exports = ClienteDireccion;
+module.exports = EmpleadoDireccion;

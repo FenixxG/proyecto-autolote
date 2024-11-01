@@ -3,7 +3,7 @@ const { body, query } = require('express-validator');
 const controladorEmpleado = require('../../controladores/empleados/controladorEmpleado');
 const ModeloEmpleado = require('../../modelos/empleados/empleado');
 const rutas = Router();
-rutas.get('/', controladorEmpleado.inicio);
+//rutas.get('/', controladorEmpleado.inicio);
 
 /**
  * @swagger
@@ -61,7 +61,7 @@ rutas.get('/', controladorEmpleado.inicio);
  *                     type: string
  *                     description: URL de la imagen del empleado
  */
-rutas.get('/listar', controladorEmpleado.listar);
+rutas.get('/listar', controladorEmpleado.getEmpleados);
 
 /**
  * @swagger
@@ -226,7 +226,7 @@ rutas.post('/guardar',
             });
         }
     }),
-    controladorEmpleado.guardar);
+    controladorEmpleado.createEmpleado);
 
 /**
  * @swagger
@@ -415,7 +415,7 @@ rutas.put('/editar',
             });
         }
     }),
-    controladorEmpleado.editar);
+    controladorEmpleado.updateEmpleado);
 
 /**
  * @swagger
@@ -452,5 +452,5 @@ rutas.delete('/eliminar',
             }
         }
     }),
-    controladorEmpleado.eliminar);
+    controladorEmpleado.deleteEmpleado);
 module.exports = rutas;

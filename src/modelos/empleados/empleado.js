@@ -1,6 +1,5 @@
 const sequelize = require('sequelize');
 const db = require('../../configuraciones/db');
-const Usuario = require('../usuarios/usuario');
 
 const Empleado = db.define(
     "empleado",
@@ -59,8 +58,5 @@ const Empleado = db.define(
         tablename: "empleados"
     }
 );
-// Relaciones
-Usuario.hasMany(Empleado, { foreignKey: 'usuarioId' });
-Empleado.belongsTo(Usuario, { foreignKey: 'usuarioId' });
 
 module.exports = Empleado;

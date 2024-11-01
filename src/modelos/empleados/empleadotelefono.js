@@ -1,8 +1,8 @@
 const sequelize = require('sequelize');
 const db = require('../../configuraciones/db');
 
-const ClienteTelefono = db.define(
-    "clientetelefono",
+const EmpleadoTelefono = db.define(
+    "empleadotelefono",
     {
         numero:{
             type: sequelize.STRING(15),
@@ -10,8 +10,8 @@ const ClienteTelefono = db.define(
         },
     },
     {
-        tablename: "clientetelefonos"
+        tablename: "empleadotelefonos"
     }
 );
 
-module.exports = ClienteTelefono;
+module.exports = EmpleadoTelefono;

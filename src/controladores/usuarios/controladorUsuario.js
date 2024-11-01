@@ -4,10 +4,10 @@ const ModeloCliente = require('../../modelos/clientes/cliente');
 const ModeloClienteTelefono = require('../../modelos/clientes/clientetelefono');
 const ModeloClienteDireccion = require('../../modelos/clientes/clientedireccion');
 const ModeloEmpleado = require('../../modelos/empleados/empleado');
+const ModeloEmpleadoCargo = require('../../modelos/empleados/empleadocargo');
 const ModeloEmpleadoTelefono = require('../../modelos/empleados/empleadotelefono');
 const ModeloEmpleadoDireccion = require('../../modelos/empleados/empleadodireccion');
 const ModeloUsuario = require('../../modelos/usuarios/usuario');
-const ModeloCargo = require('../../modelos/empleados/cargo'); //revisar
 const db = require('../../configuraciones/db');
 const { Op } = require('sequelize');
 const { enviarCorreo } = require('../../configuraciones/correo');
@@ -237,7 +237,7 @@ exports.InicioSesion = async (req, res) => {
                     attributes: ['primerNombre', 'segundoNombre', 'primerApellido', 'segundoApellido', 'imagen'],
                     include: [
                         {
-                            model: ModeloCargo,
+                            model: ModeloEmpleadoCargo,
                             attributes: ['nombre_cargo']
                         },
                         {

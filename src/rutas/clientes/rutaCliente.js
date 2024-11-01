@@ -3,7 +3,7 @@ const { body, query } = require('express-validator');
 const controladorCliente = require('../../controladores/clientes/controladorCliente');
 const ModeloCliente = require('../../modelos/clientes/cliente');
 const rutas = Router();
-rutas.get('/', controladorCliente.inicio);
+//rutas.get('/', controladorCliente.inicio);
 
 /**
  * @swagger
@@ -59,7 +59,7 @@ rutas.get('/', controladorCliente.inicio);
  *                     type: string
  *                     description: Dirección del cliente
  */
-rutas.get('/listar', controladorCliente.listar);
+rutas.get('/listar', controladorCliente.getClientes);
 
 /**
  * @swagger
@@ -225,7 +225,7 @@ rutas.post('/guardar',
             });
         }
     }),
-    controladorCliente.guardar);
+    controladorCliente.createCliente);
 
 /**
  * @swagger
@@ -418,7 +418,7 @@ rutas.put('/editar',
             });
         }
     }),
-    controladorCliente.editar);
+    controladorCliente.updateCliente);
 
 /**
  * @swagger
@@ -455,5 +455,5 @@ rutas.delete('/eliminar',
             }
         }
     }),
-    controladorCliente.eliminar);
+    controladorCliente.deleteCliente);
 module.exports = rutas;

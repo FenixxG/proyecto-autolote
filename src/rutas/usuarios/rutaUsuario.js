@@ -4,7 +4,6 @@ const controladorUsuario = require('../../controladores/usuarios/controladorUsua
 const Cliente = require('../../modelos/clientes/cliente');
 const Usuario = require('../../modelos/usuarios/usuario');
 const rutas = Router();
-rutas.get('/', controladorUsuario.inicio);
 
 /**
  * @swagger
@@ -14,7 +13,7 @@ rutas.get('/', controladorUsuario.inicio);
  */
 
 
-rutas.get('/listar', controladorUsuario.listar);
+rutas.get('/listar', controladorUsuario.getUsuariosClientes);
 
 
 

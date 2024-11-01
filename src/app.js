@@ -11,12 +11,12 @@ require('dotenv').config();
 const swaggerUi = require('swagger-ui-express');
 const swaggerSpec = require('./documentacion/swagger');
 const rutasUsuarios = require('./rutas/usuarios/rutaUsuario');
-const rutasCargos = require('./rutas/cargos/rutaCargo');
 const rutasCarros = require('./rutas/carros/rutaCarro');
 const rutasClientes = require('./rutas/clientes/rutaCliente');
 const rutasCompras = require('./rutas/compras/rutaCompra');
 const rutasCotizaciones = require('./rutas/cotizaciones/rutaCotizacion');
 const rutasEmpleados = require('./rutas/empleados/rutaEmpleado');
+const rutasCargos = require('./rutas/empleados/rutaEmpleadoCargo');
 const rutasGarantias = require('./rutas/garantias/rutaGarantia');
 const rutasInventario = require('./rutas/inventario/rutaInventario');
 const rutasMotocicletas = require('./rutas/motocicletas/rutaMoticicleta');
@@ -26,7 +26,7 @@ const rutasServicios = require('./rutas/servicios/rutaServicio');
 const rutasVentas = require('./rutas/ventas/rutaVenta');
 
 // Tablas
-const db = require('./configuracion/db');
+const db = require('./configuraciones/db');
 const { CrearModelos } = require('./modelos');
 
 
@@ -51,17 +51,17 @@ const app = express();
 app.use(morgan('dev'));
 app.use(helmet());
 app.use(limitador);
-app.use(cors(require('./configuracion/cors')));
+app.use(cors(require('./configuraciones/cors')));
 app.use(express.json());
 
-
-//app.use('/api', require('./rutas')); //usando archivo aparte que se encarga solo de las rutas
-app.use('/api/cargos', rutasCargos);
+// Llamado de rutas
+app.use('/api/usuarios', rutasUsuarios);
 app.use('/api/carros', rutasCarros);
 app.use('/api/clientes', rutasClientes);
 app.use('/api/compras', rutasCompras);
 app.use('/api/cotizaciones', rutasCotizaciones);
 app.use('/api/empleados', rutasEmpleados);
+app.use('/api/cargos', rutasCargos);
 app.use('/api/garantias', rutasGarantias);
 app.use('/api/inventario', rutasInventario);
 app.use('/api/motocicletas', rutasMotocicletas);
@@ -80,7 +80,7 @@ app.get('/swagger.json', (req, res) => {
 const port = process.env.PORT || 3000;
 
 app.listen(port, () => {
-    console.log(`Servidor escuchando en http://localhost:${port}`);
+    console.log(`Documentacion de Swagger: http://localhost:${port}/api-docs`);
 });
 
 module.exports = app;
