@@ -87,18 +87,7 @@ rutas.post('/guardar',
             }
         }
     }),
-    body("descripcion").isLength({ min: 1, max: 50 }).withMessage('La descripcion debe tener entre 3 a 50 caracteres').custom(async value => {
-        if (!value) {
-            throw new Error('La descripcion no permite valores nulos');
-        }
-        else {
-            const buscarCargo = await ModeloEmpleadoCargo.findOne({
-                where: {
-                    descripcion: value
-                }
-            });
-        }
-    }),
+    body("descripcion").isLength({ min: 1, max: 50 }).withMessage('La descripcion debe tener entre 3 a 50 caracteres'),
     controladorEmpleadoCargo.guardar);
 
 /**
@@ -154,35 +143,9 @@ rutas.put('/editar',
                 }
             }
         }),
-    body("nombre").isLength({ min: 3, max: 50 }).withMessage('El nombre debe tener entre 3 a 50 caracteres').custom(async value => {
-        if (!value) {
-            throw new Error('El nombre no permite valores nulos');
-        }
-        else {
-            const buscarCargo = await ModeloEmpleadoCargo.findOne({
-                where: {
-                    nombre: value
-                }
-            });
-        }
-    }),
-    body("descripcion").isLength({ min: 1, max: 50 }).withMessage('La descripcion debe tener entre 1 a 50 caracteres').custom(async value => {
-        if (!value) {
-            throw new Error('La descripcion no permite valores nulos');
-        }
-        else {
-            const buscarCargo = await ModeloEmpleadoCargo.findOne({
-                where: {
-                    descripcion: value
-                }
-            });
-        }
-    }),
-    body("activo").isBoolean().withMessage('El activo tiene que ser numerico').custom(async value => {
-        if (!value) {
-            throw new Error('El activo no permite valores nulos');
-        }
-    }),
+    body("nombre").isLength({ min: 3, max: 50 }).withMessage('El nombre debe tener entre 3 a 50 caracteres'),
+    body("descripcion").isLength({ min: 1, max: 50 }).withMessage('La descripcion debe tener entre 1 a 50 caracteres'),
+    body("activo").isBoolean().withMessage('Debe colocar si esta activo o no'),
     controladorEmpleadoCargo.editar);
 
 /**

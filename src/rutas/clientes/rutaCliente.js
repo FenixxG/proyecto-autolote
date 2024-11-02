@@ -369,14 +369,14 @@ rutas.put('/editar',
             });
         }
     }),
-    body("email").isLength({ min: 3, max: 50 }).withMessage('El email debe tener entre 3 a 50 caracteres').custom(async value => {
+    body("correo").isLength({ min: 3, max: 50 }).withMessage('El email debe tener entre 3 a 50 caracteres').custom(async value => {
         if (!value) {
             throw new Error('El email no permite valores nulos');
         }
         else {
             const buscarCliente = await ModeloCliente.findOne({
                 where: {
-                    email: value
+                    correo: value
                 }
             });
             if (buscarCliente) {

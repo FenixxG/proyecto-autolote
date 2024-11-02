@@ -2,10 +2,7 @@ const { Router } = require('express');
 const { body, query } = require('express-validator');
 const controladorEmpleado = require('../../controladores/empleados/controladorEmpleado');
 const ModeloEmpleado = require('../../modelos/empleados/empleado');
-const ModeloEmpleadoTelefono = require('../../modelos/empleados/empleadotelefono');
-const ModeloEmpleadoDireccion = require('../../modelos/empleados/empleadodireccion');
 const ModeloEmpleadoCargo = require('../../modelos/empleados/empleadocargo');
-const ModeloUsuario = require('../../modelos/usuarios/usuario');
 const rutas = Router();
 //rutas.get('/', controladorEmpleado.inicio);
 
@@ -303,90 +300,10 @@ rutas.put('/editar',
             }
         }
     }),
-    body("primernombre").isLength({ min: 3, max: 50 }).withMessage('El primernombre debe tener entre 3 a 50 caracteres').custom(async value => {
-        if (!value) {
-            throw new Error('El primernombre no permite valores nulos');
-        }
-        else {
-            const buscarEmpleado = await ModeloEmpleado.findOne({
-                where: {
-                    primernombre: value
-                }
-            });
-        }
-    }),
-    body("segundonombre").isLength({ min: 3, max: 50 }).withMessage('El segundonombre debe tener entre 3 a 50 caracteres').custom(async value => {
-        if (!value) {
-            throw new Error('El segundonombre no permite valores nulos');
-        }
-        else {
-            const buscarEmpleado = await ModeloEmpleado.findOne({
-                where: {
-                    segundonombre: value
-                }
-            });
-        }
-    }),
-    body("segundonombre").isLength({ min: 3, max: 50 }).withMessage('El segundonombre debe tener entre 3 a 50 caracteres').custom(async value => {
-        if (!value) {
-            throw new Error('El segundonombre no permite valores nulos');
-        }
-        else {
-            const buscarEmpleado = await ModeloEmpleado.findOne({
-                where: {
-                    primerapellido: value
-                }
-            });
-        }
-    }),
-    body("segundoapellido").isLength({ min: 3, max: 50 }).withMessage('El segundoapellido debe tener entre 3 a 50 caracteres').custom(async value => {
-        if (!value) {
-            throw new Error('El nombre no permite valores nulos');
-        }
-        else {
-            const buscarEmpleado = await ModeloEmpleado.findOne({
-                where: {
-                    segundoapellido: value
-                }
-            });
-        }
-    }),
-    body("sueldo").isDecimal({ min: 1 }).withMessage('El sueldo minimo un valor').custom(async value => {
-        if (!value) {
-            throw new Error('El sueldo debe tener minimo un valor');
-        }
-        else {
-            const buscarEmpleado = await ModeloEmpleado.findOne({
-                where: {
-                    sueldo: value
-                }
-            });
-        }
-    }),
-    body("estado").isLength({ min: 3, max: 50 }).withMessage('El estado debe ser AC, IN o BL').custom(async value => {
-        if (!value) {
-            throw new Error('El estado debe ser AC, IN o BL');
-        }
-        else {
-            const buscarEmpleado = await ModeloEmpleado.findOne({
-                where: {
-                    estado: value
-                }
-            });
-        }
-    }),
-    body("imagen").isLength({ min: 3, max: 50 }).withMessage('La imagen debe tener entre 3 a 50 caracteres').custom(async value => {
-        if (!value) {
-            throw new Error('La imagen no permite valores nulos');
-        }
-        else {
-            const buscarEmpleado = await ModeloEmpleado.findOne({
-                where: {
-                    imagen: value
-                }
-            });
-        }
-    }),
+    body("primernombre").isLength({ min: 3, max: 50 }).withMessage('El primernombre debe tener entre 3 a 50 caracteres'),
+    body("segundoapellido").isLength({ min: 3, max: 50 }).withMessage('El segundoapellido debe tener entre 3 a 50 caracteres'),
+    body("sueldo").isDecimal({ min: 1 }).withMessage('El sueldo minimo un valor'),
+    body("estado").isLength({ min: 3, max: 50 }).withMessage('El estado debe ser AC, IN o BL'),
     controladorEmpleado.updateEmpleado);
 
 /**

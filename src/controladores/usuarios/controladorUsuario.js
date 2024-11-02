@@ -194,7 +194,19 @@ exports.recuperarContrasena = async (req, res) => {
             para: correo,
             asunto: 'Recuperacion de contraseña',
             descripcion: 'Correo enviado para la recuperacion de la contraseña',
-            html: '<h1>PIN: ' + nuevoPin + '</h1><p>Este es el PIN generado automaticamente</p>'
+            //html: '<h1>PIN: ' + nuevoPin + '</h1><p>Este es el PIN generado automaticamente</p>',
+            html: `
+                <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; border: 1px solid #ddd; border-radius: 10px; padding: 20px; background-color: #f9f9f9;">
+                    <h2 style="text-align: center; color: #4CAF50;">Recuperación de Contraseña</h2>
+                    <p style="font-size: 16px; color: #333;">Hola,</p>
+                    <p style="font-size: 16px; color: #333;">Recibimos una solicitud para restablecer tu contraseña. Utiliza el siguiente PIN para completar el proceso:</p>
+                    <div style="text-align: center; margin: 20px 0;">
+                        <span style="display: inline-block; font-size: 24px; color: #ffffff; background-color: #4CAF50; padding: 10px 20px; border-radius: 5px;">${nuevoPin}</span>
+                    </div>
+                <p style="font-size: 14px; color: #777;">Este PIN es válido solo por un tiempo limitado. Si no solicitaste este cambio, por favor ignora este correo.</p>
+                <p style="text-align: center; color: #999; font-size: 12px; margin-top: 20px;">&copy; 2024 Tu Autolote. Todos los derechos reservados.</p>
+                </div>
+            `
         })
         res.json({ message: 'Correo enviado correctamente' });
     } catch (error) {
