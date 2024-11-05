@@ -74,24 +74,10 @@ rutas.post('/guardar',
         if(!value){
             throw new Error('El monto no permite valores nulos');
         }
-        else{
-            const buscarRecibos = await ModeloRecibo.findOne({
-                where: {
-                    monto: value
-                }
-            });
-        }
     }),
-    body("formaPago").isString({min: 3, max :10}).withMessage('La formaPago debe ser efectivo, tarjeta, transferencia o credito').custom(async value =>{
+    body("formaPago").isIn(['Efectivo', 'Tarjeta', 'Transferencia', 'Credito']).withMessage('Las formas de pago disponibles son: Efectivo, Tarjeta, Transferencia y Credito').custom(async value =>{
         if(!value){
-            throw new Error('La formaPago no permite valores nulos');
-        }
-        else{
-            const buscarRecibos = await ModeloRecibo.findOne({
-                where: {
-                    formaPago: value
-                }
-            });
+            throw new Error('La forma de pago no permite valores nulos');
         }
     }),
     controladorRecibo.guardar);
@@ -152,24 +138,10 @@ rutas.put('/editar',
         if(!value){
             throw new Error('El monto no permite valores nulos');
         }
-        else{
-            const buscarRecibos = await ModeloRecibo.findOne({
-                where: {
-                    monto: value
-                }
-            });
-        }
     }),
-    body("formaPago").isString({min: 3, max :10}).withMessage('La formaPago debe ser efectivo, tarjeta, transferencia o credito').custom(async value =>{
+    body("formaPago").isIn(['Efectivo', 'Tarjeta', 'Transferencia', 'Credito']).withMessage('Las formas de pago disponibles son: Efectivo, Tarjeta, Transferencia y Credito').custom(async value =>{
         if(!value){
-            throw new Error('La formaPago no permite valores nulos');
-        }
-        else{
-            const buscarRecibos = await ModeloRecibo.findOne({
-                where: {
-                    formaPago: value
-                }
-            });
+            throw new Error('La forma de pago no permite valores nulos');
         }
     }),
     controladorRecibo.editar);
@@ -211,3 +183,10 @@ rutas.delete('/eliminar',
     }),
     controladorRecibo.eliminar);
 module.exports = rutas;
+
+rutas.get('/buscar',
+    query("id").optional().isInt().withMessage("El id debe ser un entero"),
+    query("monto").optional().isFloat().withMessage("El monto debe ser un número"),
+    query("formaPago").optional().isString().withMessage("La forma de pago debe ser un texto"),
+    controladorRecibo.busqueda
+);

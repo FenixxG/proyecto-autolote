@@ -140,3 +140,37 @@ exports.eliminar = async(req, res) => {
         }
     }
 };
+
+exports.busqueda = async (req, res) => {
+    const { id, precio } = req.query;
+    const contenido = { tipo: 0, datos: [], msj: [] };
+
+    // Verificar errores de validación
+    contenido.msj = errores(validationResult(req));
+    if (contenido.msj.length > 0) {
+        enviar(400, contenido, res);
+    } else {
+        try {
+            // Construir el filtro 'where' basado en los parámetros
+            const where = {};
+            if (id) where.id = id;
+            if (precio) where.precio = precio;
+
+            // Buscar registros en la base de datos
+            const resultados = await ModeloCompra.findAll({ where });
+            if (resultados.length > 0) {
+                contenido.tipo = 1;
+                contenido.datos = resultados;
+                contenido.msj = "Búsqueda de compras realizada con éxito";
+            } else {
+                contenido.msj = "No se encontraron resultados";
+            }
+            enviar(200, contenido, res);
+        } catch (error) {
+            console.error(error);
+            contenido.msj = "ERROR EN EL SERVIDOR";
+            enviar(500, contenido, res);
+        }
+    }
+};
+

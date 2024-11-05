@@ -74,13 +74,6 @@ rutas.post('/guardar',
         if(!value){
             throw new Error('El costo no permite valores nulos');
         }
-        else{
-            const buscarServicio = await ModeloServicio.findOne({
-                where: {
-                    costo: value
-                }
-            });
-        }
     }),
     controladorServicio.guardar);
 
@@ -140,13 +133,6 @@ rutas.put('/editar',
         if(!value){
             throw new Error('El costo no permite valores nulos');
         }
-        else{
-            const buscarServicio = await ModeloServicio.findOne({
-                where: {
-                    costo: value
-                }
-            });
-        }
     }),
     controladorServicio.editar);
 
@@ -187,3 +173,10 @@ rutas.delete('/eliminar',
     }),
     controladorServicio.eliminar);
 module.exports = rutas;
+
+rutas.get('/buscar',
+    query("id").optional().isInt().withMessage("El id debe ser un entero"),
+    query("descripcion").optional().isString().withMessage("La descripción debe ser un texto"),
+    query("costo").optional().isFloat().withMessage("El costo debe ser un número"),
+    controladorServicio.busqueda
+);

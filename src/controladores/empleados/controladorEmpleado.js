@@ -6,6 +6,7 @@ const EmpleadoTelefono = require('../../modelos/empleados/empleadotelefono');
 const EmpleadoDireccion = require('../../modelos/empleados/empleadodireccion');
 const Usuario = require('../../modelos/usuarios/usuario');
 const db = require('../../configuraciones/db');
+const { enviar, errores} = require('../../configuraciones/ayuda');
 
 // Obtener todos los empleados
 exports.getEmpleados = async (req, res) => {
@@ -14,20 +15,21 @@ exports.getEmpleados = async (req, res) => {
             include: [
                 {
                     model: EmpleadoTelefono,
-                    attributes: ['telefono']
+                    atributes: ['telefono']
                 },
                 {
                     model: EmpleadoDireccion,
-                    attributes: ['direccion']
+                    atributes: ['direccion']
                 },
                 {
                     model: EmpleadoCargo,
-                    attributes: ['cargoId']
+                    atributes: ['cargoId']
                 }
             ]
         });
         res.json(empleados);
     } catch (error) {
+        console.log('Error específico:', error);
         res.status(500).json({ error: 'Error al obtener los empleados' });
     }
 };
@@ -154,5 +156,52 @@ exports.deleteEmpleado = async (req, res) => {
     } catch (error) {
         await t.rollback();
         res.status(500).json({ error: 'Error al eliminar el empleado' });
+    }
+};
+
+
+exports.busqueda = async (req, res) => {
+    const { id, identidad, primernombre, segundonombre, primerapellido, segundoapellido, sueldo, estado } = req.query;
+    var contenido = {
+        tipo: 0,
+        datos: [],
+        msj: [],
+    };
+    
+    contenido.msj = errores(validationResult(req));
+
+    if (contenido.msj.length > 0) {
+        enviar(200, contenido, res);
+    } else {
+        try {
+            // Construimos el filtro 'where' en base a los parámetros disponibles
+            let where = {};
+            if (id) where.id = id;
+            if (identidad) where.identidad = identidad;
+            if (primernombre) where.primernombre = primernombre;
+            if (segundonombre) where.segundonombre = segundonombre;
+            if (primerapellido) where.primerapellido = primerapellido;
+            if (segundoapellido) where.segundoapellido = segundoapellido;
+            if (sueldo) where.sueldo = sueldo;
+            if (estado) where.estado = estado;
+
+            const resultados = await Empleado.findAll({ where });
+
+            if (resultados.length > 0) {
+                contenido.tipo = 1;
+                contenido.datos = resultados;
+                contenido.msj = "Búsqueda de empleados realizada con éxito";
+            } else {
+                contenido.tipo = 0;
+                contenido.msj = "No se encontraron resultados para la búsqueda de empleados";
+            }
+
+            enviar(200, contenido, res);
+        } catch (error) {
+            console.error(error);
+            contenido.tipo = 0;
+            contenido.msj = "ERROR EN EL SERVIDOR";
+            enviar(500, contenido, res);
+        }
     }
 };

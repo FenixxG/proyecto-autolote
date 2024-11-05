@@ -5,6 +5,9 @@ const ClienteTelefono = require('../../modelos/clientes/clientetelefono');
 const ClienteDireccion = require('../../modelos/clientes/clientedireccion');
 const Usuario = require('../../modelos/usuarios/usuario');
 const db = require('../../configuraciones/db');
+const { enviar, errores} = require('../../configuraciones/ayuda');
+
+
 
 // Obtener todos los clientes
 exports.getClientes = async (req, res) => {
@@ -13,11 +16,11 @@ exports.getClientes = async (req, res) => {
             include: [
                 {
                     model: ClienteTelefono,
-                    attributes: ['telefono']
+                    atributes: ['telefono']
                 },
                 {
                     model: ClienteDireccion,
-                    attributes: ['direccion']
+                    atributes: ['direccion']
                 }
             ]
         });
@@ -152,3 +155,49 @@ exports.deleteCliente = async (req, res) => {
         res.status(500).json({ error: 'Error al eliminar el cliente' });
     }
 };
+
+exports.busqueda = async (req, res) => {
+    const { id, identidad, rtn, primernombre, segundonombre, primerapellido, segundoapellido, correo } = req.query;
+    var contenido = {
+        tipo: 0,
+        datos: [],
+        msj: [],
+    };
+    contenido.msj = errores(validationResult(req));
+
+    if (contenido.msj.length > 0) {
+        enviar(400, contenido, res);
+    } else {
+        try {
+            // Construimos el filtro 'where' en base a los parámetros disponibles
+            let where = {};
+            if (id) where.id = id;
+            if (identidad) where.identidad = identidad;
+            if (rtn) where.rtn = rtn;
+            if (primernombre) where.primernombre = primernombre;
+            if (segundonombre) where.segundonombre = segundonombre;
+            if (primerapellido) where.primerapellido = primerapellido;
+            if (segundoapellido) where.segundoapellido = segundoapellido;
+            if (correo) where.correo = correo;
+
+            const resultados = await Cliente.findAll({ where });
+
+            if (resultados.length > 0) {
+                contenido.tipo = 1;
+                contenido.datos = resultados;
+                contenido.msj = "Búsqueda de clientes realizada con éxito";
+            } else {
+                contenido.tipo = 0;
+                contenido.msj = "No se encontraron resultados para la búsqueda de clientes";
+            }
+
+            enviar(200, contenido, res);
+        } catch (error) {
+            console.error(error);
+            contenido.tipo = 0;
+            contenido.msj = "ERROR EN EL SERVIDOR";
+            enviar(500, contenido, res);
+        }
+    }
+};
+

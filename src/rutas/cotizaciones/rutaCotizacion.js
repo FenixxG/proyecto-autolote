@@ -76,40 +76,19 @@ rutas.get('/listar', controladorCotizaciones.listar);
  *         description: Error en la validación de los datos
  */
 rutas.post('/guardar',
-    body("tasaInteres" ).isDecimal({min:1}).withMessage('Debe tener una tasa de interes').custom(async value =>{
+    body("tasaInteres" ).isDecimal({min:1, max: 100}).withMessage('Debe tener una tasa de interes maxima de 100').custom(async value =>{
         if(!value){
             throw new Error('La tasa de interes no permite valores nulos');
-        }
-        else{
-            const buscarCotizaciones = await ModeloCotizaciones.findOne({
-                where: {
-                    tasaInteres: value
-                }
-            });
         }
     }),
     body("plazo" ).isInt({min: 1}).withMessage('Debe haber un plazo de tiempo').custom(async value =>{
         if(!value){
             throw new Error('El plazo no permite valores nulos');
         }
-        else{
-            const buscarCotizaciones = await ModeloCotizaciones.findOne({
-                where: {
-                    plazo: value
-                }
-            });
-        }
     }),
     body("montoTotal" ).isDecimal({min: 1}).withMessage('El monto minimo es 1').custom(async value =>{
         if(!value){
             throw new Error('El monto total no permite valores nulos');
-        }
-        else{
-            const buscarCotizaciones = await ModeloCotizaciones.findOne({
-                where: {
-                    montoTotal: value
-                }
-            });
         }
     }),
     controladorCotizaciones.guardar);
@@ -173,36 +152,15 @@ rutas.put('/editar',
         if(!value){
             throw new Error('La tasa de interes no permite valores nulos');
         }
-        else{
-            const buscarCotizaciones = await ModeloCotizaciones.findOne({
-                where: {
-                    tasaInteres: value
-                }
-            });
-        }
     }),
     body("plazo" ).isInt({min: 1}).withMessage('Debe haber un plazo de tiempo').custom(async value =>{
         if(!value){
             throw new Error('El plazo no permite valores nulos');
         }
-        else{
-            const buscarCotizaciones = await ModeloCotizaciones.findOne({
-                where: {
-                    plazo: value
-                }
-            });
-        }
     }),
     body("montoTotal" ).isDecimal({min: 1}).withMessage('El monto minimo es 1').custom(async value =>{
         if(!value){
             throw new Error('El monto total no permite valores nulos');
-        }
-        else{
-            const buscarCotizaciones = await ModeloCotizaciones.findOne({
-                where: {
-                    montoTotal: value
-                }
-            });
         }
     }),
     controladorCotizaciones.editar);
@@ -243,4 +201,11 @@ rutas.delete('/eliminar',
         }
     }),
     controladorCotizaciones.eliminar);
+
+    rutas.get('/buscar',
+        query("tasaInteres").optional().isFloat().withMessage("La tasa de interés debe ser un número"),
+        query("plazo").optional().isInt().withMessage("El plazo debe ser un entero"),
+        query("montoTotal").optional().isFloat().withMessage("El monto total debe ser un número"),
+        controladorCotizaciones.busqueda
+    );
 module.exports = rutas;

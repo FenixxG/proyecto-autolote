@@ -55,7 +55,7 @@ const Empleado = db.define(
         }
     },
     {
-        tablename: "empleados"
+        tableName: "empleados"
     }
 );
 

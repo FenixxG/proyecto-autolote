@@ -140,3 +140,35 @@ exports.eliminar = async(req, res) => {
         }
     }
 };
+
+exports.busqueda = async (req, res) => {
+    const { id, cantidad } = req.query;
+    const contenido = { tipo: 0, datos: [], msj: [] };
+
+    // Validar errores
+    contenido.msj = errores(validationResult(req));
+    if (contenido.msj.length > 0) {
+        enviar(400, contenido, res);
+    } else {
+        try {
+            const where = {};
+            if (id) where.id = id;
+            if (cantidad) where.cantidad = cantidad;
+
+            const resultados = await ModeloInventario.findAll({ where });
+            if (resultados.length > 0) {
+                contenido.tipo = 1;
+                contenido.datos = resultados;
+                contenido.msj = "Búsqueda de inventario realizada con éxito";
+            } else {
+                contenido.msj = "No se encontraron resultados";
+            }
+            enviar(200, contenido, res);
+        } catch (error) {
+            console.error(error);
+            contenido.msj = "ERROR EN EL SERVIDOR";
+            enviar(500, contenido, res);
+        }
+    }
+};
+

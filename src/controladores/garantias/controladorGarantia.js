@@ -140,3 +140,35 @@ exports.eliminar = async(req, res) => {
         }
     }
 };
+
+exports.busqueda = async (req, res) => {
+    const { id, tipo, duracionMeses } = req.query;
+    const contenido = { tipo: 0, datos: [], msj: [] };
+
+    // Validar errores
+    contenido.msj = errores(validationResult(req));
+    if (contenido.msj.length > 0) {
+        enviar(400, contenido, res);
+    } else {
+        try {
+            const where = {};
+            if (id) where.id = id;
+            if (tipo) where.tipo = tipo;
+            if (duracionMeses) where.duracionMeses = duracionMeses;
+
+            const resultados = await ModeloGarantia.findAll({ where });
+            if (resultados.length > 0) {
+                contenido.tipo = 1;
+                contenido.datos = resultados;
+                contenido.msj = "Búsqueda de garantías realizada con éxito";
+            } else {
+                contenido.msj = "No se encontraron resultados";
+            }
+            enviar(200, contenido, res);
+        } catch (error) {
+            console.error(error);
+            contenido.msj = "ERROR EN EL SERVIDOR";
+            enviar(500, contenido, res);
+        }
+    }
+};

@@ -31,9 +31,6 @@ rutas.get('/', controladorInventario.inicio);
  *                   id:
  *                     type: integer
  *                     description: ID del artículo en inventario
- *                   nombreArticulo:
- *                     type: string
- *                     description: Nombre del artículo
  *                   cantidad:
  *                     type: integer
  *                     description: Cantidad disponible del artículo
@@ -53,9 +50,6 @@ rutas.get('/listar', controladorInventario.listar);
  *           schema:
  *             type: object
  *             properties:
- *               nombreArticulo:
- *                 type: string
- *                 description: Nombre del artículo
  *               cantidad:
  *                 type: integer
  *                 description: Cantidad del artículo
@@ -69,13 +63,6 @@ rutas.post('/guardar',
     body("nombreArticulo").isLength({min: 3, max : 50}).withMessage('El Nombre del Articulo debe tener entre 3 a 50 caracteres').custom(async value =>{
         if(!value){
             throw new Error('El Nombre del Articulo no permite valores nulos');
-        }
-        else{
-            const buscarInventario = await ModeloInventario.findOne({
-                where: {
-                    nombreArticulo: value
-                }
-            });
         }
     }),
     body("cantidad").isInt(),
@@ -101,9 +88,6 @@ rutas.post('/guardar',
  *           schema:
  *             type: object
  *             properties:
- *               nombreArticulo:
- *                 type: string
- *                 description: Nombre del artículo
  *               cantidad:
  *                 type: integer
  *                 description: Cantidad del artículo
@@ -129,18 +113,6 @@ rutas.put('/editar',
             if (!buscarInventario) {
                 throw new Error('El id del inventario no existe');
             }
-        }
-    }),
-    body("nombreArticulo").isLength({min: 3, max : 50}).withMessage('El Articulo debe tener entre 3 a 50 caracteres').custom(async value =>{
-        if(!value){
-            throw new Error('El nombre no permite valores nulos');
-        }
-        else{
-            const buscarInventario = await ModeloInventario.findOne({
-                where: {
-                    nombreArticulo: value
-                }
-            });
         }
     }),
     body("cantidad").isInt(),
@@ -183,3 +155,9 @@ rutas.delete('/eliminar',
     }),
     controladorInventario.eliminar);
 module.exports = rutas;
+
+rutas.get('/buscar',
+    query("cantidad").optional().isInt({ min: 0 }).withMessage("La cantidad debe ser un número entero no negativo"),
+    controladorInventario.busqueda
+);
+

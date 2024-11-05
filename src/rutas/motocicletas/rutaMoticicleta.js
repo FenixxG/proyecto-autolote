@@ -110,62 +110,38 @@ rutas.post('/guardar',
         if(!value){
             throw new Error('La marca no permite valores nulos');
         }
-        else{
-            const buscarMoto = await ModeloMotocicleta.findOne({
-                where: {
-                    marca: value
-                }
-            });
-        }
     }),
-    body("modelo").isLength({min: 3, max : 50}).withMessage('El modelo debe tener entre 3 a 50 caracteres').custom(async value =>{
-        if(!value){
-            throw new Error('El modelo no permite valores nulos');
-        }
-        else{
-            const buscarMoto = await ModeloMotocicleta.findOne({
-                where: {
-                    modelo: value
-                }
-            });
-            if(buscarMoto){
-                throw new Error('El modelo de la motocicleta ya existe');
-            }
-        }
-    }),
-    body("anio").isInt({min: 4}).withMessage('El anio tiene que ser numerico').custom(async value =>{
-        if(!value){
+    body("modelo").isLength({min: 3, max : 50}).withMessage('El modelo debe tener entre 3 a 50 caracteres'),
+    body("anio").isInt({ min: 1950 }).withMessage('El año debe ser un número entero y no menor que 1950').custom(async value => {
+        if (!value) {
             throw new Error('El año no permite valores nulos');
         }
     }),
-
     body("color").isLength({min: 3, max : 50}).withMessage('El color debe tener entre 3 a 50 caracteres').custom(async value =>{
         if(!value){
             throw new Error('El color no permite valores nulos');
         }
     }),
 
-    body("precio").isInt({min: 1, max : 3000000}).withMessage('El precio debe tener entre 1 a 3000000').custom(async value =>{
+    body("precio").isDecimal({ min: 1 }).withMessage('El precio debe ser un número decimal y no puede ser negativo').custom(async value =>{
         if(!value){
             throw new Error('El precio no permite valores nulos');
         }
     }),
 
-    body("estado").isLength({min: 3, max : 50}).withMessage('El estado debe ser Nuevo o Usado').custom(async value =>{
+    body("estado").isIn(['Nuevo', 'Usado']).withMessage('El estado debe ser "Nuevo" o "Usado"').custom(async value =>{
         if(!value){
             throw new Error('El estado no permite valores nulos');
-        }
-        else{
-            const buscarMoto = await ModeloMotocicleta.findOne({
-                where: {
-                    estado: value
-                }
-            });
         }
     }),
     body("disponible").isBoolean().withMessage('El valor tiene que ser booleano').custom(async value =>{
         if(!value){
             throw new Error('No permite valores nulos');
+        }
+    }),
+    body("imagen").optional().isString().withMessage('La imagen debe ser una cadena de texto').custom(async value => {
+        if (value && !value.startsWith('http')) {
+            throw new Error('La URL de la imagen debe ser válida');
         }
     }),
     controladorMotocicleta.guardar);
@@ -244,28 +220,10 @@ rutas.put('/editar',
         if(!value){
             throw new Error('La marca no permite valores nulos');
         }
-        else{
-            const buscarMoto = await ModeloMotocicleta.findOne({
-                where: {
-                    marca: value
-                }
-            });
-        }
     }),
-    body("modelo").isLength({min: 3, max : 50}).withMessage('El modelo debe tener entre 3 a 50 caracteres').custom(async value =>{
-        if(!value){
-            throw new Error('El modelo no permite valores nulos');
-        }
-        else{
-            const buscarMoto = await ModeloMotocicleta.findOne({
-                where: {
-                    modelo: value
-                }
-            });
-        }
-    }),
-    body("anio").isInt({min: 4}).withMessage('El año tiene que ser numerico').custom(async value =>{
-        if(!value){
+    body("modelo").isLength({min: 3, max : 50}).withMessage('El modelo debe tener entre 3 a 50 caracteres'),
+    body("anio").isInt({ min: 1950 }).withMessage('El año debe ser un número entero y no menor que 1950').custom(async value => {
+        if (!value) {
             throw new Error('El año no permite valores nulos');
         }
     }),
@@ -274,26 +232,26 @@ rutas.put('/editar',
             throw new Error('El color no permite valores nulos');
         }
     }),
-    body("precio").isInt({min: 1, max : 3000000}).withMessage('El precio debe tener entre 1 a 3000000').custom(async value =>{
+
+    body("precio").isDecimal({ min: 1 }).withMessage('El precio debe ser un número decimal y no puede ser negativo').custom(async value =>{
         if(!value){
             throw new Error('El precio no permite valores nulos');
         }
     }),
-    body("estado").isLength({min: 3, max : 50}).withMessage('El estado debe ser Nuevo o Usado').custom(async value =>{
+
+    body("estado").isIn(['Nuevo', 'Usado']).withMessage('El estado debe ser "Nuevo" o "Usado"').custom(async value =>{
         if(!value){
             throw new Error('El estado no permite valores nulos');
-        }
-        else{
-            const buscarMoto = await ModeloMotocicleta.findOne({
-                where: {
-                    estado: value
-                }
-            });
         }
     }),
     body("disponible").isBoolean().withMessage('El valor tiene que ser booleano').custom(async value =>{
         if(!value){
             throw new Error('No permite valores nulos');
+        }
+    }),
+    body("imagen").optional().isString().withMessage('La imagen debe ser una cadena de texto').custom(async value => {
+        if (value && !value.startsWith('http')) {
+            throw new Error('La URL de la imagen debe ser válida');
         }
     }),
     controladorMotocicleta.editar);
@@ -335,3 +293,14 @@ rutas.delete('/eliminar',
     }),
     controladorMotocicleta.eliminar);
 module.exports = rutas;
+
+rutas.get('/buscar',
+    query("marca").optional().isString().withMessage("La marca debe ser un texto"),
+    query("modelo").optional().isString().withMessage("El modelo debe ser un texto"),
+    query("anio").optional().isInt().withMessage("El año debe ser un entero"),
+    query("color").optional().isString().withMessage("El color debe ser un texto"),
+    query("precio").optional().isFloat().withMessage("El precio debe ser un número"),
+    query("estado").optional().isString().withMessage("El estado debe ser un texto"),
+    query("disponible").optional().isBoolean().withMessage("Disponible debe ser un valor booleano"),
+    controladorMotocicleta.busqueda
+);

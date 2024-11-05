@@ -74,24 +74,10 @@ rutas.post('/guardar',
         if(!value){
             throw new Error('El precio no permite valores nulos');
         }
-        else{
-            const buscarVenta = await ModeloVenta.findOne({
-                where: {
-                    precio: value
-                }
-            });
-        }
     }),
     body("formaPago").isString({min: 3, max : 50}).withMessage('La formaPago debe ser efectivo, tarjeta, transferencia o credito').custom(async value =>{
         if(!value){
             throw new Error('La formaPago no permite valores nulos');
-        }
-        else{
-            const buscarVenta = await ModeloVenta.findOne({
-                where: {
-                    formaPago: value
-                }
-            });
         }
     }),
     controladorVenta.guardar);
@@ -148,22 +134,16 @@ rutas.put('/editar',
             }
         }
     }),
-    body("nombre").isLength({ min: 3, max: 50 }).withMessage('El nombre debe tener 3-50 caracteres')
-    .custom(async value => {
-        if (!value) {
-            throw new Error('El nombre no permite valores nulos');
-        } else {
-            const buscarVenta = await ModeloVenta.findOne({
-                where: {
-                    nombre: value
-                }
-            });
-            if (buscarVenta) {
-                throw new Error('El nombre de la venta ya existe');
-            }
+    body("precio").isDecimal({min: 1}).withMessage('El precio debe tener minimo 1 caracter').custom(async value =>{
+        if(!value){
+            throw new Error('El precio no permite valores nulos');
         }
     }),
-    body("activo").optional().isBoolean().withMessage("Solo se permiten valores booleanos"),
+    body("formaPago").isString({min: 3, max : 50}).withMessage('La formaPago debe ser efectivo, tarjeta, transferencia o credito').custom(async value =>{
+        if(!value){
+            throw new Error('La formaPago no permite valores nulos');
+        }
+    }),
     controladorVenta.editar);
 
 /**
@@ -202,4 +182,12 @@ rutas.delete('/eliminar',
         }
     }),
     controladorVenta.eliminar);
+module.exports = rutas;
+
+rutas.get('/buscar',
+    query("id").optional().isInt().withMessage("El id debe ser un entero"),
+    query("precio").optional().isDecimal().withMessage("El precio debe ser un número decimal con hasta dos decimales"),
+    query("formaPago").optional().isIn(['Efectivo', 'Tarjeta', 'Transferencia', 'Credito']).withMessage("La forma de pago debe ser uno de los siguientes: Efectivo, Tarjeta, Transferencia, Credito"),
+    controladorVenta.busqueda
+);
 module.exports = rutas;

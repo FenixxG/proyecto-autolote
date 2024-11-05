@@ -140,3 +140,44 @@ exports.eliminar = async(req, res) => {
         }
     }
 };
+
+
+exports.busqueda = async (req, res) => {
+    const { id, monto, formaPago } = req.query;
+    var contenido = {
+        tipo: 0,
+        datos: [],
+        msj: [],
+    };
+    contenido.msj = errores(validationResult(req));
+
+    if (contenido.msj.length > 0) {
+        enviar(200, contenido, res);
+    } else {
+        try {
+            // Construimos el filtro 'where' en base a los parámetros disponibles
+            let where = {};
+            if (id) where.id = id;
+            if (monto) where.monto = monto;
+            if (formaPago) where.formaPago = formaPago;
+
+            const resultados = await ModeloRecibo.findAll({ where });
+
+            if (resultados.length > 0) {
+                contenido.tipo = 1;
+                contenido.datos = resultados;
+                contenido.msj = "Búsqueda de recibos realizada con éxito";
+            } else {
+                contenido.tipo = 0;
+                contenido.msj = "No se encontraron resultados para la búsqueda de recibos";
+            }
+
+            enviar(200, contenido, res);
+        } catch (error) {
+            console.error(error);
+            contenido.tipo = 0;
+            contenido.msj = "ERROR EN EL SERVIDOR";
+            enviar(500, contenido, res);
+        }
+    }
+};

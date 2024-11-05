@@ -106,63 +106,57 @@ rutas.get('/listar', controladorCarro.listar);
  *         description: Error en la validación de los datos
  */
 rutas.post('/guardar',
-    body("marca").isLength({min: 3, max : 50}).withMessage('El nombre debe tener entre 3 a 50 caracteres').custom(async value =>{
+    body("marca").isLength({min: 3, max : 50}).withMessage('La marca debe tener entre 3 a 50 caracteres').custom(async value =>{
         if(!value){
             throw new Error('La marca no permite valores nulos');
         }
-        else{
-            const buscarCarro = await ModeloCarros.findOne({
-                where: {
-                    marca: value
-                }
-            });
-        }
     }),
-    body("modelo").isLength({min: 3, max : 50}).withMessage('El nombre debe tener entre 3 a 50 caracteres').custom(async value =>{
+    body("modelo").isLength({min: 3, max : 50}).withMessage('El modelo debe tener entre 3 a 50 caracteres').custom(async value =>{
         if(!value){
             throw new Error('El modelo no permite valores nulos');
         }
         else{
-            const buscarCarro = await ModeloCarros.findOne({
+            const buscarMoto = await ModeloMotocicleta.findOne({
                 where: {
                     modelo: value
                 }
             });
+            if(!buscarMoto){
+                throw new Error('El modelo del carro ya existe');
+            }
         }
     }),
-    body("anio").isInt({min: 4}).withMessage('El anio tiene que ser numerico').custom(async value =>{
-        if(!value){
-            throw new Error('El anio no permite valores nulos');
+    body("anio").isInt({ min: 1886 }).withMessage('El año debe ser un número entero y no menor que 1886').custom(async value => {
+        if (!value) {
+            throw new Error('El año no permite valores nulos');
         }
     }),
 
-    body("color").isLength({min: 3, max : 50}).withMessage('El nombre debe tener entre 3 a 50 caracteres').custom(async value =>{
+    body("color").isLength({min: 3, max : 50}).withMessage('El color debe tener entre 3 a 50 caracteres').custom(async value =>{
         if(!value){
             throw new Error('El color no permite valores nulos');
         }
     }),
 
-    body("precio").isInt({min: 1, max : 3000000}).withMessage('El nombre debe tener entre 3 a 50 caracteres').custom(async value =>{
+    body("precio").isDecimal({ min: 1 }).withMessage('El precio debe ser un número decimal y no puede ser negativo').custom(async value =>{
         if(!value){
             throw new Error('El precio no permite valores nulos');
         }
     }),
 
-    body("estado").isLength({min: 3, max : 50}).withMessage('El nombre debe tener entre 3 a 50 caracteres').custom(async value =>{
+    body("estado").isIn(['Nuevo', 'Usado']).withMessage('El estado debe ser "Nuevo" o "Usado"').custom(async value =>{
         if(!value){
             throw new Error('El estado no permite valores nulos');
-        }
-        else{
-            const buscarCarro = await ModeloCarros.findOne({
-                where: {
-                    estado: value
-                }
-            });
         }
     }),
     body("disponible").isBoolean().withMessage('El valor tiene que ser booleano').custom(async value =>{
         if(!value){
             throw new Error('No permite valores nulos');
+        }
+    }),
+    body("imagen").optional().isString().withMessage('La imagen debe ser una cadena de texto').custom(async value => {
+        if (value && !value.startsWith('http')) {
+            throw new Error('La URL de la imagen debe ser válida');
         }
     }),
     controladorCarro.guardar);
@@ -237,60 +231,39 @@ rutas.put('/editar',
             }
         }
     }),
-    body("marca").isLength({min: 3, max : 50}).withMessage('El nombre debe tener entre 3 a 50 caracteres').custom(async value =>{
-        if(!value){
-            throw new Error('La marca no permite valores nulos');
-        }
-        else{
-            const buscarCarro = await ModeloCarros.findOne({
-                where: {
-                    marca: value
-                }
-            });
-        }
-    }),
-    body("modelo").isLength({min: 3, max : 50}).withMessage('El nombre debe tener entre 3 a 50 caracteres').custom(async value =>{
-        if(!value){
-            throw new Error('El modelo no permite valores nulos');
-        }
-        else{
-            const buscarCarro = await ModeloCarros.findOne({
-                where: {
-                    modelo: value
-                }
-            });
-        }
-    }),
-    body("anio").isInt({min: 4}).withMessage('El año tiene que ser numerico').custom(async value =>{
-        if(!value){
+    body("marca").isLength({min: 3, max : 50}).withMessage('La marca debe tener entre 3 a 50 caracteres'),
+    body("modelo").isLength({min: 3, max : 50}).withMessage('El modelo debe tener entre 3 a 50 caracteres'),
+    body("anio").isInt({ min: 1886 }).withMessage('El año debe ser un número entero y no menor que 1886').custom(async value => {
+        if (!value) {
             throw new Error('El año no permite valores nulos');
         }
     }),
+
     body("color").isLength({min: 3, max : 50}).withMessage('El color debe tener entre 3 a 50 caracteres').custom(async value =>{
         if(!value){
             throw new Error('El color no permite valores nulos');
         }
     }),
-    body("precio").isInt({min: 1, max : 3000000}).withMessage('El precio debe tener entre 3 a 50 caracteres').custom(async value =>{
+
+    body("precio").isDecimal({ min: 0 }).withMessage('El precio debe ser un número decimal y no puede ser negativo').custom(async value =>{
         if(!value){
             throw new Error('El precio no permite valores nulos');
         }
     }),
-    body("estado").isLength({min: 3, max : 50}).withMessage('El nombre debe tener entre 3 a 50 caracteres').custom(async value =>{
+
+    body("estado").isIn(['Nuevo', 'Usado']).withMessage('El estado debe ser "Nuevo" o "Usado"').custom(async value =>{
         if(!value){
             throw new Error('El estado no permite valores nulos');
-        }
-        else{
-            const buscarCarro = await ModeloCarros.findOne({
-                where: {
-                    estado: value
-                }
-            });
         }
     }),
     body("disponible").isBoolean().withMessage('El valor tiene que ser booleano').custom(async value =>{
         if(!value){
             throw new Error('No permite valores nulos');
+        }
+    }),
+    body("imagen").optional().isString().withMessage('La imagen debe ser una cadena de texto').custom(async value => {
+        if (value && !value.startsWith('http')) {
+            throw new Error('La URL de la imagen debe ser válida');
         }
     }),
     controladorCarro.editar);
@@ -314,7 +287,7 @@ rutas.put('/editar',
  *       404:
  *         description: Carro no encontrado
  */
-rutas.delete('/eliminar',
+ rutas.delete('/eliminar',
     query("id").isInt().withMessage("El id debe ser un entero")
     .custom(async value => {
         if (!value) {
@@ -326,9 +299,23 @@ rutas.delete('/eliminar',
                 }
             });
             if (!buscarCarro) {
-                throw new Error('El id del cargo no existe');
+                throw new Error('El id del carro no existe');
             }
         }
     }),
     controladorCarro.eliminar);
+
+
+    rutas.get('/buscar',
+        query("id").optional().isInt().withMessage("El id debe ser un entero"),
+        query("marca").optional().isString().withMessage("La marca debe ser un texto"),
+        query("modelo").optional().isString().withMessage("El modelo debe ser un texto"),
+        query("anio").optional().isInt().withMessage("El año debe ser un entero"),
+        query("color").optional().isString().withMessage("El color debe ser un texto"),
+        query("precio").optional().isFloat().withMessage("El precio debe ser un número"),
+        query("estado").optional().isString().withMessage("El estado debe ser un texto"),
+        query("disponible").optional().isInt({ min: 0, max: 1 }).withMessage("Disponible debe ser 0 o 1"),
+        controladorCarro.busqueda
+    );
+
 module.exports = rutas;

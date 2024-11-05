@@ -17,5 +17,4 @@ const Recibo = db.define(
         tablename: "recibos"
     }
 );
-
 module.exports = Recibo;

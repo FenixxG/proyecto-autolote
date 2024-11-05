@@ -119,7 +119,7 @@ rutas.get('/listar', controladorEmpleado.getEmpleados);
  *                 description: Contraseña
  *               tipoUsuario:
  *                 type: string
- *                 enum: [cliente, empleado]
+ *                 enum: [empleado, cliente]
  *                 description: Tipo de usuario
  *               telefonos:
  *                 type: array
@@ -180,7 +180,7 @@ rutas.post('/guardar',
     body("primernombre").isLength({ min: 3, max: 50 }).withMessage('El primernombre debe tener entre 3 a 50 caracteres'),
     body("primerapellido").isLength({ min: 3, max: 50 }).withMessage('El segundonombre debe tener entre 3 a 50 caracteres'),
     body("sueldo").isDecimal({ min: 1 }).withMessage('El sueldo minimo un valor'),
-    body("estado").isString({ min: 3, max: 50 }).withMessage('El estado debe ser AC, IN o BL'),
+    body("estado").isIn(['AC', 'IN', 'BL']).withMessage('El estado debe ser AC, IN o BL'),
     body("tipoUsuario").notEmpty().withMessage('El tipo de usuario es requerido').isIn(['cliente', 'empleado']).withMessage('Tipo de usuario no válido'),
     body("contrasena").isLength({ min: 6 }).withMessage('La contraseña debe tener al menos 6 caracteres').notEmpty().withMessage('La contraseña es requerida'),
     body("nombre").optional().isLength({ min: 3, max: 100 }).withMessage('El nombre debe tener entre 3 y 100 caracteres'),
@@ -246,6 +246,37 @@ rutas.post('/guardar',
  *               imagen:
  *                 type: string
  *                 description: URL de la imagen del empleado
+ *               nombre:
+ *                 type: string
+ *                 description: Nombre de usuario
+ *               correo:
+ *                 type: string
+ *                 format: email
+ *                 description: Correo electrónico
+ *               contrasena:
+ *                 type: string
+ *                 format: password
+ *                 description: Contraseña
+ *               tipoUsuario:
+ *                 type: string
+ *                 enum: [empleado, cliente]
+ *                 description: Tipo de usuario
+ *               telefonos:
+ *                 type: array
+ *                 items:
+ *                   type: object
+ *                   properties:
+ *                     telefono:
+ *                       type: string
+ *                       description: Número de teléfono
+ *               direcciones:
+ *                 type: array
+ *                 items:
+ *                   type: object
+ *                   properties:
+ *                     direccion:
+ *                       type: string
+ *                       description: Dirección del empleado
  *     responses:
  *       200:
  *         description: Empleado actualizado exitosamente
@@ -303,7 +334,12 @@ rutas.put('/editar',
     body("primernombre").isLength({ min: 3, max: 50 }).withMessage('El primernombre debe tener entre 3 a 50 caracteres'),
     body("segundoapellido").isLength({ min: 3, max: 50 }).withMessage('El segundoapellido debe tener entre 3 a 50 caracteres'),
     body("sueldo").isDecimal({ min: 1 }).withMessage('El sueldo minimo un valor'),
-    body("estado").isLength({ min: 3, max: 50 }).withMessage('El estado debe ser AC, IN o BL'),
+    body("estado").isIn(['AC', 'IN', 'BL']).withMessage('El estado debe ser AC, IN o BL'),
+    body("tipoUsuario").notEmpty().withMessage('El tipo de usuario es requerido').isIn(['cliente', 'admin', 'empleado']).withMessage('Tipo de usuario no válido'),
+    body("contrasena").isLength({ min: 6 }).withMessage('La contraseña debe tener al menos 6 caracteres').notEmpty().withMessage('La contraseña es requerida'),
+    body("nombre").optional().isLength({ min: 3, max: 100 }).withMessage('El nombre debe tener entre 3 y 100 caracteres'),
+    body("telefonos").isArray().withMessage('Los teléfonos deben ser un array'),
+    body("direcciones").isArray().withMessage('Las direcciones deben ser un array'),
     controladorEmpleado.updateEmpleado);
 
 /**
@@ -342,4 +378,19 @@ rutas.delete('/eliminar',
             }
         }),
     controladorEmpleado.deleteEmpleado);
+module.exports = rutas;
+
+
+rutas.get('/buscar',
+    query("id").optional().isInt().withMessage("El id debe ser un entero"),
+    query("identidad").optional().isString().withMessage("La identidad debe ser un texto"),
+    query("primernombre").optional().isString().withMessage("El primer nombre debe ser un texto"),
+    query("segundonombre").optional().isString().withMessage("El segundo nombre debe ser un texto"),
+    query("primerapellido").optional().isString().withMessage("El primer apellido debe ser un texto"),
+    query("segundoapellido").optional().isString().withMessage("El segundo apellido debe ser un texto"),
+    query("sueldo").optional().isFloat().withMessage("El sueldo debe ser un número"),
+    query("estado").optional().isString().withMessage("El estado debe ser un texto"),
+    controladorEmpleado.busqueda
+);
+
 module.exports = rutas;

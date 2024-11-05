@@ -82,24 +82,10 @@ rutas.post('/guardar',
         if(!value){
             throw new Error('El nombre no permite valores nulos');
         }
-        else{
-            const buscarProveedor = await ModeloProveedor.findOne({
-                where: {
-                    nombre: value
-                }
-            });
-        }
     }),
     body("direccion").isLength({min: 3, max : 50}).withMessage('La direccion debe tener entre 3 a 50 caracteres').custom(async value =>{
         if(!value){
             throw new Error('la direccion no permite valores nulos');
-        }
-        else{
-            const buscarProveedor = await ModeloProveedor.findOne({
-                where: {
-                    direccion: value
-                }
-            });
         }
     }),
     body("email").isString({min: 4}).withMessage('El email tiene que ser numerico').custom(async value =>{
@@ -111,13 +97,6 @@ rutas.post('/guardar',
     body("telefono").isLength({min: 3, max : 50}).withMessage('El telefono debe tener entre 3 a 50 caracteres').custom(async value =>{
         if(!value){
             throw new Error('El telefono no permite valores nulos');
-        }
-        else{
-            const buscarProveedor = await ModeloProveedor.findOne({
-                where: {
-                    telefono: value
-                }
-            });
         }
     }),
     controladorProveedor.guardar);
@@ -182,24 +161,10 @@ rutas.put('/editar',
         if(!value){
             throw new Error('El nombre no permite valores nulos');
         }
-        else{
-            const buscarProveedor = await ModeloProveedor.findOne({
-                where: {
-                    nombre: value
-                }
-            });
-        }
     }),
     body("direccion").isLength({min: 3, max : 50}).withMessage('La direccion debe tener entre 3 a 50 caracteres').custom(async value =>{
         if(!value){
             throw new Error('la direccion no permite valores nulos');
-        }
-        else{
-            const buscarProveedor = await ModeloProveedor.findOne({
-                where: {
-                    direccion: value
-                }
-            });
         }
     }),
     body("email").isString({min: 4}).withMessage('El email tiene que ser numerico').custom(async value =>{
@@ -207,7 +172,7 @@ rutas.put('/editar',
             throw new Error('El email no permite valores nulos');
         }
     }),
-    body("telefono").isInt({min: 3, max : 50}).withMessage('El telefono debe tener entre 3 a 50 caracteres').custom(async value =>{
+    body("telefono").isLength({min: 3, max : 50}).withMessage('El telefono debe tener entre 3 a 50 caracteres').custom(async value =>{
         if(!value){
             throw new Error('El telefono no permite valores nulos');
         }
@@ -251,3 +216,11 @@ rutas.delete('/eliminar',
     }),
     controladorProveedor.eliminar);
 module.exports = rutas;
+
+rutas.get('/buscar',
+    query("nombre").optional().isString().withMessage("El nombre debe ser un texto"),
+    query("direccion").optional().isString().withMessage("La dirección debe ser un texto"),
+    query("email").optional().isEmail().withMessage("El email debe ser un formato válido"),
+    query("telefono").optional().isString().withMessage("El teléfono debe ser un texto"),
+    controladorProveedor.busqueda
+);

@@ -140,3 +140,48 @@ exports.eliminar = async(req, res) => {
         }
     }
 };
+
+exports.busqueda = async (req, res) => {
+    const { id, marca, modelo, anio, color, precio, estado, disponible } = req.query;
+    var contenido = {
+        tipo: 0,
+        datos: [],
+        msj: [],
+    };
+    contenido.msj = errores(validationResult(req));
+
+    if (contenido.msj.length > 0) {
+        enviar(200, contenido, res);
+    } else {
+        try {
+            // Construimos el filtro 'where' en base a los parámetros disponibles
+            let where = {};
+            if (id) where.id = id;
+            if (marca) where.marca = marca;
+            if (modelo) where.modelo = modelo;
+            if (anio) where.anio = anio;
+            if (color) where.color = color;
+            if (precio) where.precio = precio;
+            if (estado) where.estado = estado;
+            if (disponible) where.disponible = disponible;
+
+            const resultados = await ModeloCarro.findAll({ where });
+
+            if (resultados.length > 0) {
+                contenido.tipo = 1;
+                contenido.datos = resultados;
+                contenido.msj = "Búsqueda realizada con éxito";
+            } else {
+                contenido.tipo = 0;
+                contenido.msj = "No se encontraron resultados";
+            }
+
+            enviar(200, contenido, res);
+        } catch (error) {
+            console.error(error);
+            contenido.tipo = 0;
+            contenido.msj = "ERROR EN EL SERVIDOR";
+            enviar(500, contenido, res);
+        }
+    }
+};

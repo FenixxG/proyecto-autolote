@@ -74,29 +74,14 @@ rutas.get('/listar', controladorGarantia.listar);
  *         description: Error en la validación de los datos
  */
 rutas.post('/guardar',
-    body("tipo").isString({min: 3, max : 15}).withMessage('El tipo debe ser  completa o limitada').custom(async value =>{
+    body("tipo").isString({min: 3, max : 15}).withMessage('El tipo debe ser completa o limitada').custom(async value =>{
         if(!value){
             throw new Error('El tipo no permite valores nulos');
         }
-        else{
-            const buscarGarantia = await ModeloGarantia.findOne({
-                where: {
-                    tipo: value
-                }
-            });
-        }
     }),
-    body("duracionMeses").isLength({min: 1, max : 50}).withMessage('El mes debe ser entre 3 a 50 caracteres').custom(async value =>{
+    body("duracionMeses").isInt({min: 1, max : 50}).withMessage('El mes debe ser entre 1 a 50 meses').custom(async value =>{
         if(!value){
-            throw new Error('La duracion no permite valores nulos');
-        }
-        else{
-            const buscarGarantia = await ModeloGarantia.findOne({
-                where: {
-                    duracionMeses: value
-                }
-            });
-
+            throw new Error('La duracion de los meses no permite valores nulos');
         }
     }),
     body("descripcion").isLength({min: 3, max : 50}).withMessage('La descripcion debe tener entre 3 a 50 caracteres'),
@@ -160,24 +145,10 @@ rutas.put('/editar',
         if(!value){
             throw new Error('El tipo no permite valores nulos');
         }
-        else{
-            const buscarGarantia = await ModeloGarantia.findOne({
-                where: {
-                    tipo: value
-                }
-            });
-        }
     }),
     body("duracionMeses").isLength({min: 1, max : 50}).withMessage('El mes debe ser entre 3 a 50 caracteres').custom(async value =>{
         if(!value){
             throw new Error('La duracion del mes no permite valores nulos');
-        }
-        else{
-            const buscarGarantia = await ModeloGarantia.findOne({
-                where: {
-                    duracionMeses: value
-                }
-            });
         }
     }),
     body("descripcion").isLength(),
@@ -220,3 +191,10 @@ rutas.delete('/eliminar',
     }),
     controladorGarantia.eliminar);
 module.exports = rutas;
+
+
+rutas.get('/buscar',
+    query("tipo").optional().isIn(['Completa', 'Limitada']).withMessage("El tipo debe ser 'Completa' o 'Limitada'"),
+    query("duracionMeses").optional().isInt({ min: 1 }).withMessage("La duración en meses debe ser un número entero positivo"),
+    controladorGarantia.busqueda
+);

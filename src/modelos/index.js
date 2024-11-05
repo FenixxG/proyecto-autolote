@@ -70,7 +70,7 @@ exports.CrearModelos = async () => {
     modeloServicio.belongsTo(modeloVenta);
 
     // Relación: Cargo y Empleados
-    modeloEmpleadoCargo.hasMany(modeloEmpleado);
+    modeloEmpleadoCargo.hasMany(modeloEmpleado,);
     modeloEmpleado.belongsTo(modeloEmpleadoCargo);
 
     // Relacion: Clientes y Direcciones

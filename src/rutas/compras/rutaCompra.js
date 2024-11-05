@@ -62,16 +62,9 @@ rutas.get('/listar', controladorCompras.listar);
  *         description: Error en la validación de los datos
  */
 rutas.post('/guardar',
-    body("precio").isDecimal({min: 1}).withMessage('El precio debe tener almenos un valor').custom(async value =>{
+    body("precio").isDecimal({min: 1}).withMessage('El precio debe tener al menos un valor').custom(async value =>{
         if(!value){
             throw new Error('El precio no permite valores nulos');
-        }
-        else{
-            const buscarCompras = await ModeloCompras.findOne({
-                where: {
-                    precio: value
-                }
-            });
         }
     }),
     controladorCompras.guardar);
@@ -120,7 +113,7 @@ rutas.put('/editar',
                 }
             });
             if (!buscarCompras) {
-                throw new Error('El id del cargo no existe');
+                throw new Error('El id de la compra no existe');
             }
         }
     }),
@@ -128,12 +121,6 @@ rutas.put('/editar',
     .custom(async value => {
         if (!value) {
             throw new Error('El precio no permite valores nulos');
-        } else {
-            const buscarCompras = await ModeloCompras.findOne({
-                where: {
-                    nombre: value
-                }
-            });
         }
     }),
     controladorCompras.editar);
@@ -169,9 +156,15 @@ rutas.delete('/eliminar',
                 }
             });
             if (!buscarCompras) {
-                throw new Error('El id del cargo no existe');
+                throw new Error('El id de la compra no existe');
             }
         }
     }),
     controladorCompras.eliminar);
+
+    rutas.get('/buscar',
+        query("precio").optional().isFloat().withMessage("El precio debe ser un número"),
+        controladorCompras.busqueda
+    );
+
 module.exports = rutas;
