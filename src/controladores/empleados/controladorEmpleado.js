@@ -97,7 +97,7 @@ exports.updateEmpleado = async (req, res) => {
     }
 
     try {
-        const { id } = req.params;
+        const { id } = req.query;
         const { nombre, correo, rtn, telefonos, direcciones } = req.body;
         const t = await db.transaction();
         const empleado = await Empleado.findByPk(id);
@@ -139,7 +139,7 @@ exports.updateEmpleado = async (req, res) => {
 exports.deleteEmpleado = async (req, res) => {
     const t = await db.transaction();
     try {
-        const { id } = req.params;
+        const { id } = req.query;
         const empleado = await Empleado.findByPk(id);
 
         if (!empleado) {

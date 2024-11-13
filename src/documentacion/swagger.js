@@ -1,4 +1,5 @@
 const swaggerJsdoc = require('swagger-jsdoc');
+const swaggerUi = require('swagger-ui-express');
 const path = require('path');
 
 const options = {
@@ -14,7 +15,25 @@ const options = {
                 url: 'http://localhost:3001/api', // URL del servidor
                 description: 'Servidor local',
             },
+            {
+                url: 'http://192.168.50.31:3001/api',
+                description: "API del AutoLote con IP"
+            },
         ],
+        components: {
+            securitySchemes:{
+                BearerAuth:{
+                    type: 'http',
+                    scheme: 'bearer',
+                    bearerFormat: 'JWT'
+                }
+            }
+        },
+        security:[
+            {
+                BearerAuth: []
+            }
+        ]
     },
     apis: [`${path.join(__dirname, "../rutas/**/*.js")}`], // Ruta a los archivos donde estan definidas las rutas
 };
@@ -22,3 +41,6 @@ const options = {
 const swaggerSpec = swaggerJsdoc(options);
 
 module.exports = swaggerSpec;
+/*module.exports = (app) => {
+    app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+};*/

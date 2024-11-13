@@ -246,37 +246,6 @@ rutas.post('/guardar',
  *               imagen:
  *                 type: string
  *                 description: URL de la imagen del empleado
- *               nombre:
- *                 type: string
- *                 description: Nombre de usuario
- *               correo:
- *                 type: string
- *                 format: email
- *                 description: Correo electrónico
- *               contrasena:
- *                 type: string
- *                 format: password
- *                 description: Contraseña
- *               tipoUsuario:
- *                 type: string
- *                 enum: [empleado, cliente]
- *                 description: Tipo de usuario
- *               telefonos:
- *                 type: array
- *                 items:
- *                   type: object
- *                   properties:
- *                     telefono:
- *                       type: string
- *                       description: Número de teléfono
- *               direcciones:
- *                 type: array
- *                 items:
- *                   type: object
- *                   properties:
- *                     direccion:
- *                       type: string
- *                       description: Dirección del empleado
  *     responses:
  *       200:
  *         description: Empleado actualizado exitosamente
@@ -311,7 +280,7 @@ rutas.put('/editar',
                     identidad: value
                 }
             });
-            if (buscarEmpleado) {
+            if (!buscarEmpleado) {
                 throw new Error('La identidad del empleado ya existe');
             }
         }
@@ -326,7 +295,7 @@ rutas.put('/editar',
                     rtn: value
                 }
             });
-            if (buscarEmpleado) {
+            if (!buscarEmpleado) {
                 throw new Error('El rtn del empleado ya existe');
             }
         }
@@ -335,11 +304,11 @@ rutas.put('/editar',
     body("segundoapellido").isLength({ min: 3, max: 50 }).withMessage('El segundoapellido debe tener entre 3 a 50 caracteres'),
     body("sueldo").isDecimal({ min: 1 }).withMessage('El sueldo minimo un valor'),
     body("estado").isIn(['AC', 'IN', 'BL']).withMessage('El estado debe ser AC, IN o BL'),
-    body("tipoUsuario").notEmpty().withMessage('El tipo de usuario es requerido').isIn(['cliente', 'admin', 'empleado']).withMessage('Tipo de usuario no válido'),
-    body("contrasena").isLength({ min: 6 }).withMessage('La contraseña debe tener al menos 6 caracteres').notEmpty().withMessage('La contraseña es requerida'),
-    body("nombre").optional().isLength({ min: 3, max: 100 }).withMessage('El nombre debe tener entre 3 y 100 caracteres'),
-    body("telefonos").isArray().withMessage('Los teléfonos deben ser un array'),
-    body("direcciones").isArray().withMessage('Las direcciones deben ser un array'),
+    // body("tipoUsuario").notEmpty().withMessage('El tipo de usuario es requerido').isIn(['cliente', 'admin', 'empleado']).withMessage('Tipo de usuario no válido'),
+    // body("contrasena").isLength({ min: 6 }).withMessage('La contraseña debe tener al menos 6 caracteres').notEmpty().withMessage('La contraseña es requerida'),
+    // body("nombre").optional().isLength({ min: 3, max: 100 }).withMessage('El nombre debe tener entre 3 y 100 caracteres'),
+    // body("telefonos").isArray().withMessage('Los teléfonos deben ser un array'),
+    // body("direcciones").isArray().withMessage('Las direcciones deben ser un array'),
     controladorEmpleado.updateEmpleado);
 
 /**

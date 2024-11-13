@@ -49,7 +49,7 @@ const rutas = Router();
  *                   segundoapellido:
  *                     type: string
  *                     description: Segundo apellido del cliente
- *                   email:
+ *                   correo:
  *                     type: string
  *                     description: Correo electrónico del cliente
  */
@@ -226,6 +226,7 @@ rutas.post('/guardar',
  *                 description: Segundo apellido del cliente
  *               correo:
  *                 type: string
+ *                 format: email
  *                 description: Correo electrónico del cliente
  *               nombre:
  *                 type: string
@@ -288,7 +289,7 @@ rutas.put('/editar',
                         identidad: value
                     }
                 });
-                if (buscarCliente) {
+                if (!buscarCliente) {
                     throw new Error('La identidad del cliente ya existe');
                 }
             }
@@ -303,7 +304,7 @@ rutas.put('/editar',
                         rtn: value
                     }
                 });
-                if (buscarCliente) {
+                if (!buscarCliente) {
                     throw new Error('El rtn del cliente ya existe');
                 }
             }
@@ -333,7 +334,7 @@ rutas.put('/editar',
                 }
             }
         }),
-    body("tipoUsuario").notEmpty().withMessage('El tipo de usuario es requerido').isIn(['cliente', 'admin', 'empleado']).withMessage('Tipo de usuario no válido'),
+    body("tipoUsuario").notEmpty().withMessage('El tipo de usuario es requerido').isIn(['cliente', 'empleado']).withMessage('Tipo de usuario no válido'),
     body("contrasena").isLength({ min: 6 }).withMessage('La contraseña debe tener al menos 6 caracteres').notEmpty().withMessage('La contraseña es requerida'),
     body("nombre").optional().isLength({ min: 3, max: 100 }).withMessage('El nombre debe tener entre 3 y 100 caracteres'),
     body("telefonos").isArray().withMessage('Los teléfonos deben ser un array'),

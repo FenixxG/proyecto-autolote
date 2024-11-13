@@ -116,12 +116,12 @@ rutas.post('/guardar',
             throw new Error('El modelo no permite valores nulos');
         }
         else{
-            const buscarMoto = await ModeloMotocicleta.findOne({
+            const buscarCarro = await ModeloCarros.findOne({
                 where: {
                     modelo: value
                 }
             });
-            if(!buscarMoto){
+            if(buscarCarro){
                 throw new Error('El modelo del carro ya existe');
             }
         }

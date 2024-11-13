@@ -94,7 +94,7 @@ exports.updateCliente = async (req, res) => {
     }
 
     try {
-        const { id } = req.params;
+        const { id } = req.query;
         const { nombre, correo, rtn, telefonos, direcciones } = req.body;
         const t = await db.transaction();
         const cliente = await Cliente.findByPk(id);
