@@ -149,6 +149,7 @@ exports.busqueda = async (req, res) => {
     contenido.msj = errores(validationResult(req));
     if (contenido.msj.length > 0) {
         enviar(400, contenido, res);
+<<<<<<< HEAD
         return;
     }
 
@@ -177,6 +178,28 @@ exports.busqueda = async (req, res) => {
         console.error(error);
         contenido.msj = "ERROR EN EL SERVIDOR";
         enviar(500, contenido, res);
+=======
+    } else {
+        try {
+            const where = {};
+            if (id) where.id = id;
+            if (cantidad) where.cantidad = cantidad;
+
+            const resultados = await ModeloInventario.findAll({ where });
+            if (resultados.length > 0) {
+                contenido.tipo = 1;
+                contenido.datos = resultados;
+                contenido.msj = "Búsqueda de inventario realizada con éxito";
+            } else {
+                contenido.msj = "No se encontraron resultados";
+            }
+            enviar(200, contenido, res);
+        } catch (error) {
+            console.error(error);
+            contenido.msj = "ERROR EN EL SERVIDOR";
+            enviar(500, contenido, res);
+        }
+>>>>>>> 844e46afbdd5c91caf58389200c7242ecb084108
     }
 };
 

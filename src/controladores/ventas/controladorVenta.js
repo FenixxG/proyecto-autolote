@@ -149,6 +149,7 @@ exports.busqueda = async (req, res) => {
         msj: [],
     };
 
+<<<<<<< HEAD
     // Validar errores de parámetros
     contenido.msj = errores(validationResult(req));
     if (contenido.msj.length > 0) {
@@ -163,15 +164,30 @@ exports.busqueda = async (req, res) => {
 
     try {
         // Construir el filtro 'where' en base a los parámetros disponibles
+=======
+    contenido.msj = errores(validationResult(req));
+
+    if (contenido.msj.length > 0) {
+        return enviar(200, contenido, res);
+    }
+
+    try {
+        // Construimos el filtro 'where' en base a los parámetros disponibles
+>>>>>>> 844e46afbdd5c91caf58389200c7242ecb084108
         let where = {};
         if (id) where.id = id;
         if (precio) where.precio = precio;
         if (formaPago) where.formaPago = formaPago;
 
+<<<<<<< HEAD
         // Buscar registros en la base de datos
         const resultados = await ModeloVenta.findAll({ where });
 
         // Verificar si se encontraron resultados
+=======
+        const resultados = await ModeloVenta.findAll({ where });
+
+>>>>>>> 844e46afbdd5c91caf58389200c7242ecb084108
         if (resultados.length > 0) {
             contenido.tipo = 1;
             contenido.datos = resultados;
@@ -180,13 +196,23 @@ exports.busqueda = async (req, res) => {
             contenido.msj = "No se encontraron resultados para la búsqueda de ventas";
         }
 
+<<<<<<< HEAD
         // Enviar la respuesta
         return enviar(200, contenido, res);
 
+=======
+        enviar(200, contenido, res);
+>>>>>>> 844e46afbdd5c91caf58389200c7242ecb084108
     } catch (error) {
         console.error(error);
         contenido.tipo = 0;
         contenido.msj = "ERROR EN EL SERVIDOR";
+<<<<<<< HEAD
         return enviar(500, contenido, res); // Aseguramos el código 500 en caso de error interno
     }
 };
+=======
+        enviar(500, contenido, res);
+    }
+};
+>>>>>>> 844e46afbdd5c91caf58389200c7242ecb084108
