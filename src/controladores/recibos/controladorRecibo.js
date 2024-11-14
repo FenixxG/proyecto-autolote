@@ -149,7 +149,6 @@ exports.busqueda = async (req, res) => {
         datos: [],
         msj: [],
     };
-<<<<<<< HEAD
 
     // Validar errores de los parámetros
     contenido.msj = errores(validationResult(req));
@@ -194,37 +193,3 @@ exports.busqueda = async (req, res) => {
     }
 };
 
-=======
-    contenido.msj = errores(validationResult(req));
-
-    if (contenido.msj.length > 0) {
-        enviar(200, contenido, res);
-    } else {
-        try {
-            // Construimos el filtro 'where' en base a los parámetros disponibles
-            let where = {};
-            if (id) where.id = id;
-            if (monto) where.monto = monto;
-            if (formaPago) where.formaPago = formaPago;
-
-            const resultados = await ModeloRecibo.findAll({ where });
-
-            if (resultados.length > 0) {
-                contenido.tipo = 1;
-                contenido.datos = resultados;
-                contenido.msj = "Búsqueda de recibos realizada con éxito";
-            } else {
-                contenido.tipo = 0;
-                contenido.msj = "No se encontraron resultados para la búsqueda de recibos";
-            }
-
-            enviar(200, contenido, res);
-        } catch (error) {
-            console.error(error);
-            contenido.tipo = 0;
-            contenido.msj = "ERROR EN EL SERVIDOR";
-            enviar(500, contenido, res);
-        }
-    }
-};
->>>>>>> 844e46afbdd5c91caf58389200c7242ecb084108

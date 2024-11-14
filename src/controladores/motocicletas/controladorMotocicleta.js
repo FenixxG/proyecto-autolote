@@ -146,7 +146,6 @@ exports.busqueda = async (req, res) => {
     const { id, marca, modelo, anio, color, precio, estado, disponible } = req.query;
     const contenido = { tipo: 0, datos: [], msj: [] };
 
-<<<<<<< HEAD
     // Validar errores
     contenido.msj = errores(validationResult(req));
     if (contenido.msj.length > 0) {
@@ -190,36 +189,3 @@ exports.busqueda = async (req, res) => {
         return enviar(500, contenido, res);
     }
 };
-=======
-    contenido.msj = errores(validationResult(req));
-    if (contenido.msj.length > 0) {
-        enviar(400, contenido, res);
-    } else {
-        try {
-            const where = {};
-            if (id) where.id = id;
-            if (marca) where.marca = marca;
-            if (modelo) where.modelo = modelo;
-            if (anio) where.anio = anio;
-            if (color) where.color = color;
-            if (precio) where.precio = precio;
-            if (estado) where.estado = estado;
-            if (disponible !== undefined) where.disponible = disponible;
-
-            const resultados = await ModeloMotocicleta.findAll({ where });
-            if (resultados.length > 0) {
-                contenido.tipo = 1;
-                contenido.datos = resultados;
-                contenido.msj = "Búsqueda de motocicletas realizada con éxito";
-            } else {
-                contenido.msj = "No se encontraron resultados";
-            }
-            enviar(200, contenido, res);
-        } catch (error) {
-            console.error(error);
-            contenido.msj = "ERROR EN EL SERVIDOR";
-            enviar(500, contenido, res);
-        }
-    }
-};
->>>>>>> 844e46afbdd5c91caf58389200c7242ecb084108
