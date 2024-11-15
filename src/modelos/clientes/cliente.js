@@ -38,6 +38,10 @@ const Cliente = db.define(
             validate: {
                 isEmail: true
             }
+        },
+        imagen: {
+            type: sequelize.STRING(250),
+            allowNull: true,
         }
     },
     {

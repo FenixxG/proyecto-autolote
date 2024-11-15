@@ -96,9 +96,6 @@ rutas.get('/listar', controladorCarro.listar);
  *               disponible:
  *                 type: boolean
  *                 description: Disponibilidad del carro
- *               imagen:
- *                 type: string
- *                 description: URL de la imagen del carro
  *     responses:
  *       201:
  *         description: Carro creado exitosamente
@@ -154,11 +151,6 @@ rutas.post('/guardar',
             throw new Error('No permite valores nulos');
         }
     }),
-    body("imagen").optional().isString().withMessage('La imagen debe ser una cadena de texto').custom(async value => {
-        if (value && !value.startsWith('http')) {
-            throw new Error('La URL de la imagen debe ser válida');
-        }
-    }),
     controladorCarro.guardar);
 
 /**
@@ -204,9 +196,6 @@ rutas.post('/guardar',
  *               disponible:
  *                 type: boolean
  *                 description: Disponibilidad del carro
- *               imagen:
- *                 type: string
- *                 description: URL de la imagen del carro
  *     responses:
  *       200:
  *         description: Carro actualizado exitosamente
@@ -259,11 +248,6 @@ rutas.put('/editar',
     body("disponible").isBoolean().withMessage('El valor tiene que ser booleano').custom(async value =>{
         if(!value){
             throw new Error('No permite valores nulos');
-        }
-    }),
-    body("imagen").optional().isString().withMessage('La imagen debe ser una cadena de texto').custom(async value => {
-        if (value && !value.startsWith('http')) {
-            throw new Error('La URL de la imagen debe ser válida');
         }
     }),
     controladorCarro.editar);

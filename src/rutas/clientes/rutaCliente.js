@@ -52,6 +52,9 @@ const rutas = Router();
  *                   correo:
  *                     type: string
  *                     description: Correo electrónico del cliente
+ *                   imagen:
+ *                     type: string
+ *                     description: URL de la imagen del cliente
  */
 rutas.get('/listar', controladorCliente.getClientes);
 

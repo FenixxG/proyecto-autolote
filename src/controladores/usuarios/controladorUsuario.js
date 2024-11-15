@@ -18,6 +18,46 @@ const generarPin = () => {
     return crypto.randomBytes(3).toString('hex').slice(0, 6);
 }
 
+// Obtener todos los usuarios
+exports.getUsuarios = async (req, res) => {
+    try {
+        const usuarios = await ModeloUsuario.findAll({
+            include: [
+                {
+                    model: ModeloCliente,
+                    include: [
+                        {
+                            model: ModeloClienteTelefono,
+                            attributes: ['telefono']
+                        },
+                        {
+                            model: ModeloClienteDireccion,
+                            attributes: ['direccion']
+                        }
+                    ]
+                },
+                {
+                    model: ModeloEmpleado,
+                    include: [
+                        {
+                            model: ModeloEmpleadoTelefono,
+                            attributes: ['telefono']
+                        },
+                        {
+                            model: ModeloEmpleadoDireccion,
+                            attributes: ['direccion']
+                        }
+                    ]
+                }
+            ],
+            attributes: ['id', 'nombre', 'correo', 'estado', 'createdAt', 'updatedAt']
+        });
+        res.json(usuarios);
+    } catch (error) {
+        res.status(500).json({ error: 'Error al obtener los usuarios' });
+    }
+};
+
 // Obtener todos los usuarios de los clientes
 exports.getUsuariosClientes = async (req, res) => {
     try {

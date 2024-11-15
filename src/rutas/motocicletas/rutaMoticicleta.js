@@ -96,9 +96,6 @@ rutas.get('/listar', controladorMotocicleta.listar);
  *               disponible:
  *                 type: boolean
  *                 description: Disponibilidad de la motocicleta
- *               imagen:
- *                 type: string
- *                 description: URL de la imagen de la motocicleta
  *     responses:
  *       201:
  *         description: Motocicleta creada exitosamente
@@ -137,11 +134,6 @@ rutas.post('/guardar',
     body("disponible").isBoolean().withMessage('El valor tiene que ser booleano').custom(async value =>{
         if(!value){
             throw new Error('No permite valores nulos');
-        }
-    }),
-    body("imagen").optional().isString().withMessage('La imagen debe ser una cadena de texto').custom(async value => {
-        if (value && !value.startsWith('http')) {
-            throw new Error('La URL de la imagen debe ser válida');
         }
     }),
     controladorMotocicleta.guardar);
@@ -189,9 +181,6 @@ rutas.post('/guardar',
  *               disponible:
  *                 type: boolean
  *                 description: Disponibilidad de la motocicleta
- *               imagen:
- *                 type: string
- *                 description: URL de la imagen de la motocicleta
  *     responses:
  *       200:
  *         description: Motocicleta actualizada exitosamente
@@ -247,11 +236,6 @@ rutas.put('/editar',
     body("disponible").isBoolean().withMessage('El valor tiene que ser booleano').custom(async value =>{
         if(!value){
             throw new Error('No permite valores nulos');
-        }
-    }),
-    body("imagen").optional().isString().withMessage('La imagen debe ser una cadena de texto').custom(async value => {
-        if (value && !value.startsWith('http')) {
-            throw new Error('La URL de la imagen debe ser válida');
         }
     }),
     controladorMotocicleta.editar);

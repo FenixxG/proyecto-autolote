@@ -103,9 +103,6 @@ rutas.get('/listar', controladorEmpleado.getEmpleados);
  *                 type: string
  *                 enum: [AC, IN, BL]
  *                 description: Estado del empleado
- *               imagen:
- *                 type: string
- *                 description: URL de la imagen del empleado
  *               nombre:
  *                 type: string
  *                 description: Nombre de usuario
@@ -243,9 +240,6 @@ rutas.post('/guardar',
  *                 type: string
  *                 enum: [AC, IN, BL]
  *                 description: Estado del empleado
- *               imagen:
- *                 type: string
- *                 description: URL de la imagen del empleado
  *     responses:
  *       200:
  *         description: Empleado actualizado exitosamente

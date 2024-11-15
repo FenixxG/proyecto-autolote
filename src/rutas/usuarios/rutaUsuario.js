@@ -44,7 +44,7 @@ const rutas = Router();
  *       500:
  *         description: Error al obtener los usuarios
  */
-rutas.get('/listar', controladorUsuario.getUsuariosClientes);
+rutas.get('/listar', controladorUsuario.getUsuarios);
 
 /**
  * @swagger
