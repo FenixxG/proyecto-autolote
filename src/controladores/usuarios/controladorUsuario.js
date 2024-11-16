@@ -271,7 +271,7 @@ exports.InicioSesion = async (req, res) => {
             include: [
                 {
                     model: ModeloCliente,
-                    atributes: ['primernombre', 'segundonombre', 'primerapellido', 'segundoapellido', 'imagen'],
+                    atributes: ['nombreCompleto','primernombre', 'segundonombre', 'primerapellido', 'segundoapellido', 'imagen'],
                     include: [
                         {
                             model: ModeloClienteTelefono,
@@ -319,7 +319,7 @@ exports.InicioSesion = async (req, res) => {
                     login: usuario.nombre,
                     tipo: usuario.tipoUsuario,
                     correo: usuario.correo,
-                    datoPersonales: usuario.tipoUsuario == 'Cliente' ? usuario.cliente : usuario.empleado
+                    datoPersonales: usuario.tipoUsuario == 'Cliente' ? usuario.clientes[0] : usuario.empleados[0]
                 };
                 const Token = getToken({ id: usuario.id });
                 return res.json({ Token, Usuario });
@@ -330,5 +330,6 @@ exports.InicioSesion = async (req, res) => {
         }
     } catch (error) {
         res.status(500).json({ error: 'Error al momento de iniciar sesion' });
+        console.log(error);
     }
 }

@@ -162,9 +162,19 @@ rutas.post('/guardar',
             throw new Error('El primernombre no permite valores nulos');
         }
     }),
+    body("segundonombre").isLength({ min: 3, max: 20 }).withMessage('El segundonombre debe tener entre 3 a 20 caracteres').custom(async value => {
+        if (!value) {
+            throw new Error('El segundonombre no permite valores nulos');
+        }
+    }),
     body("primerapellido").isLength({ min: 3, max: 20 }).withMessage('El primerapellido debe tener entre 3 a 20 caracteres').custom(async value => {
         if (!value) {
             throw new Error('El primerapellido no permite valores nulos');
+        }
+    }),
+    body("segundoapellido").isLength({ min: 3, max: 20 }).withMessage('El segundoapellido debe tener entre 3 a 20 caracteres').custom(async value => {
+        if (!value) {
+            throw new Error('El segundoapellido no permite valores nulos');
         }
     }),
     body("correo").isEmail().withMessage('El correo debe tener un formato válido').custom(async value => {
@@ -317,9 +327,19 @@ rutas.put('/editar',
                 throw new Error('El primernombre no permite valores nulos');
             }
         }),
+        body("segundonombre").isLength({ min: 3, max: 20 }).withMessage('El segundonombre debe tener entre 3 a 20 caracteres').custom(async value => {
+            if (!value) {
+                throw new Error('El segundonombre no permite valores nulos');
+            }
+        }),
         body("primerapellido").isLength({ min: 3, max: 20 }).withMessage('El primerapellido debe tener entre 3 a 20 caracteres').custom(async value => {
             if (!value) {
                 throw new Error('El primerapellido no permite valores nulos');
+            }
+        }),
+        body("segundoapellido").isLength({ min: 3, max: 20 }).withMessage('El segundoapellido debe tener entre 3 a 20 caracteres').custom(async value => {
+            if (!value) {
+                throw new Error('El segundoapellido no permite valores nulos');
             }
         }),
         body("correo").isEmail().withMessage('El correo debe tener un formato válido').custom(async value => {

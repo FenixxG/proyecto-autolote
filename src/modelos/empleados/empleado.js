@@ -52,6 +52,15 @@ const Empleado = db.define(
             validate: {
                 isEmail: true
             }
+        },
+        nombreCompleto: {
+            type: sequelize.DataTypes.VIRTUAL,
+            get() {
+                return `${this.primernombre} ${this.segundonombre ? this.segundonombre : ''} ${this.primerapellido} ${this.segundoapellido ? this.segundoapellido : ''}`;
+            },
+            set(value) {
+                throw new Error('No se puede cargar el nombre completo');
+            }
         }
     },
     {
