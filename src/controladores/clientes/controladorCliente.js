@@ -71,6 +71,8 @@ exports.createCliente = async (req, res) => {
         if (direcciones && Array.isArray(direcciones)) {
             const direccionesData = direcciones.map((dir) => ({
                 direccion: dir.direccion,
+                longitud: dir.longitud,
+                latitud: dir.latitud,
                 clienteId: cliente.id,
             }));
             await ClienteDireccion.bulkCreate(direccionesData, { transaction: t });

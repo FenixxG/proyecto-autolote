@@ -8,6 +8,14 @@ const ClienteDireccion = db.define(
             type: sequelize.TEXT,
             allowNull: true
         },
+        longitud: {
+            type: sequelize.DOUBLE,
+            allowNull: true
+        },
+        latitud: {
+            type: sequelize.DOUBLE,
+            allowNull: true
+        },
         activo: {
             type: sequelize.BOOLEAN,
             allowNull: true,
