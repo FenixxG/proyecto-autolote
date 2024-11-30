@@ -159,7 +159,7 @@ exports.deleteCliente = async (req, res) => {
 };
 
 exports.busqueda = async (req, res) => {
-    const { id, identidad, rtn, primernombre, segundonombre, primerapellido, segundoapellido, correo } = req.query;
+    const { id, identidad, rtn, primernombre, segundonombre, primerapellido, segundoapellido, correo, telefono, direccion } = req.query;
     var contenido = {
         tipo: 0,
         datos: [],
@@ -173,7 +173,7 @@ exports.busqueda = async (req, res) => {
     }
 
     // Validar que al menos uno de los campos de búsqueda esté especificado
-    if (!id && !identidad && !rtn && !primernombre && !segundonombre && !primerapellido && !segundoapellido && !correo) {
+    if (!id && !identidad && !rtn && !primernombre && !segundonombre && !primerapellido && !segundoapellido && !correo && !telefono && !direccion) {
         contenido.msj = "Debe especificar al menos un campo de búsqueda";
         enviar(400, contenido, res);
         return;
@@ -190,6 +190,8 @@ exports.busqueda = async (req, res) => {
         if (primerapellido) where.primerapellido = primerapellido;
         if (segundoapellido) where.segundoapellido = segundoapellido;
         if (correo) where.correo = correo;
+        if (telefono) where.telefono = telefono;
+        if (direccion) where.direccion = direccion;
 
         const resultados = await Cliente.findAll({ where });
 

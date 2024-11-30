@@ -184,4 +184,10 @@ rutas.delete('/eliminar',
             }
         }),
     controladorEmpleadoCargo.eliminar);
+
+rutas.get('/buscar',
+    query("id").optional().isInt().withMessage("El id debe ser un entero"),
+    query("nombre").optional().isString().withMessage("El nombre debe ser un texto"),
+    controladorEmpleadoCargo.busqueda
+);
 module.exports = rutas;

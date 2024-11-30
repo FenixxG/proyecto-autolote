@@ -34,13 +34,13 @@ const { CrearModelos } = require('./modelos');
 
 
 db.authenticate()
-.then(() => {
-    console.log(
-        "========== Conexion establecida con el servidor de BD =========="
-    );
-    CrearModelos();
-})
-.catch((error) => console.log("ERROR: " + error));
+    .then(() => {
+        console.log(
+            "========== Conexion establecida con el servidor de BD =========="
+        );
+        CrearModelos();
+    })
+    .catch((error) => console.log("ERROR: " + error));
 
 // Funciones
 const limitador = rateLimit({
@@ -53,7 +53,16 @@ const app = express();
 
 // Middlewares
 app.use(morgan('dev'));
-app.use(helmet());
+app.use(helmet({
+    contentSecurityPolicy: {
+        directives: {
+            defaultSrc: ["'self'"],
+            imgSrc: ["'self'", "http://localhost:3001", "data:"],
+            styleSrc: ["'self'", "'unsafe-inline'"],
+        },
+    },
+    crossOriginResourcePolicy: false,
+}));
 app.use(limitador);
 app.use(cors(require('./configuraciones/cors')));
 //app.use(express.urlencoded({ extended: false }));
