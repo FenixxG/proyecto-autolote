@@ -45,7 +45,7 @@ db.authenticate()
 // Funciones
 const limitador = rateLimit({
     windowMs: 1000 * 60 * 10, // 10 minutos
-    max: 100, // Maximo de peticiones
+    max: 200, // Maximo de peticiones
     message: 'Demasiadas peticiones, por favor intente de nuevo más tarde.'
 });
 

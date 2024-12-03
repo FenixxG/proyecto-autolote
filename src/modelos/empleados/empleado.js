@@ -6,11 +6,11 @@ const Empleado = db.define(
     {
         identidad: {
             type: sequelize.STRING(15),
-            allowNull: true
+            allowNull: true,
         },
         rtn: {
             type: sequelize.STRING(16),
-            allowNull: true
+            allowNull: true,
         },
         primernombre: {
             type: sequelize.STRING(50),
