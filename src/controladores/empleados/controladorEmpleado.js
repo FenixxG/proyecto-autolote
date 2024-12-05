@@ -161,7 +161,7 @@ exports.deleteEmpleado = async (req, res) => {
 
 
 exports.busqueda = async (req, res) => {
-    const { id, identidad, primernombre, segundonombre, primerapellido, segundoapellido, sueldo, estado } = req.query;
+    const { id, identidad, primernombre, segundonombre, primerapellido, segundoapellido, sueldo, estado, telefono, direccion } = req.query;
     var contenido = {
         tipo: 0,
         datos: [],
@@ -176,7 +176,7 @@ exports.busqueda = async (req, res) => {
     }
 
     // Validar que al menos uno de los campos de búsqueda esté especificado
-    if (!id && !identidad && !primernombre && !segundonombre && !primerapellido && !segundoapellido && !sueldo && !estado) {
+    if (!id && !identidad && !primernombre && !segundonombre && !primerapellido && !segundoapellido && !sueldo && !estado && !telefono && !direccion) {
         contenido.msj = "Debe especificar al menos un campo de búsqueda";
         enviar(400, contenido, res);
         return;
@@ -194,7 +194,25 @@ exports.busqueda = async (req, res) => {
         if (sueldo) where.sueldo = sueldo;
         if (estado) where.estado = estado;
 
-        const resultados = await Empleado.findAll({ where });
+        // Configurar las relaciones y sus condiciones
+        let include = [
+            {
+                model: EmpleadoTelefono,
+                where: telefono ? { telefono: telefono } : undefined,
+                required: telefono ? true : false
+            },
+            {
+                model: EmpleadoDireccion,
+                where: direccion ? { direccion: direccion } : undefined,
+                required: direccion ? true : false
+            },
+            {
+                model: EmpleadoCargo,
+                as: 'cargo'
+            }
+        ];
+
+        const resultados = await Empleado.findAll({ where, include });
 
         if (resultados.length > 0) {
             contenido.tipo = 1;

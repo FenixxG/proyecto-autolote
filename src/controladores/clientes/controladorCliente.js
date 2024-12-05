@@ -193,7 +193,21 @@ exports.busqueda = async (req, res) => {
         if (telefono) where.telefono = telefono;
         if (direccion) where.direccion = direccion;
 
-        const resultados = await Cliente.findAll({ where });
+        // Configurar las relaciones y sus condiciones
+        let include = [
+            {
+                model: ClienteTelefono,
+                where: telefono ? { telefono: telefono } : undefined,
+                required: telefono ? true : false
+            },
+            {
+                model: ClienteDireccion,
+                where: direccion ? { direccion: direccion } : undefined,
+                required: direccion ? true : false
+            }
+        ];
+
+        const resultados = await Cliente.findAll({ where, include });
 
         if (resultados.length > 0) {
             contenido.tipo = 1;

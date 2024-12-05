@@ -116,7 +116,7 @@ rutas.get('/listar', controladorEmpleado.getEmpleados);
  *                 description: Contraseña
  *               tipoUsuario:
  *                 type: string
- *                 enum: [empleado, cliente]
+ *                 enum: [empleado]
  *                 description: Tipo de usuario
  *               telefonos:
  *                 type: array
@@ -178,6 +178,21 @@ rutas.post('/guardar',
     body("segundonombre").isLength({ min: 3, max: 50 }).withMessage('El segundonombre debe tener entre 3 a 50 caracteres'),
     body("primerapellido").isLength({ min: 3, max: 50 }).withMessage('El primerapellido debe tener entre 3 a 50 caracteres'),
     body("segundoapellido").isLength({ min: 3, max: 50 }).withMessage('El segundoapellido debe tener entre 3 a 50 caracteres'),
+    body("correo").isEmail().withMessage('El correo debe tener un formato válido').custom(async value => {
+        if (!value) {
+            throw new Error('El correo no permite valores nulos');
+        }
+        else {
+            const buscarEmpleado = await ModeloEmpleado.findOne({
+                where: {
+                    correo: value
+                }
+            });
+            if (buscarEmpleado) {
+                throw new Error('Este correo del empleado ya existe');
+            }
+        }
+    }),
     body("sueldo").isDecimal({ min: 1 }).withMessage('El sueldo minimo un valor'),
     body("estado").isIn(['AC', 'IN', 'BL']).withMessage('El estado debe ser AC, IN o BL'),
     body("tipoUsuario").notEmpty().withMessage('El tipo de usuario es requerido').isIn(['cliente', 'empleado']).withMessage('Tipo de usuario no válido'),
@@ -234,6 +249,10 @@ rutas.post('/guardar',
  *               segundoapellido:
  *                 type: string
  *                 description: Segundo apellido del empleado
+ *               correo:
+ *                 type: string
+ *                 format: email
+ *                 description: Correo electrónico
  *               sueldo:
  *                 type: number
  *                 format: double
@@ -292,7 +311,7 @@ rutas.put('/editar',
                     identidad: value
                 }
             });
-            if (!buscarEmpleado) {
+            if (buscarEmpleado) {
                 throw new Error('La identidad del empleado ya existe');
             }
         }
@@ -307,7 +326,7 @@ rutas.put('/editar',
                     rtn: value
                 }
             });
-            if (!buscarEmpleado) {
+            if (buscarEmpleado) {
                 throw new Error('El rtn del empleado ya existe');
             }
         }
@@ -321,6 +340,21 @@ rutas.put('/editar',
     // body("tipoUsuario").notEmpty().withMessage('El tipo de usuario es requerido').isIn(['cliente', 'admin', 'empleado']).withMessage('Tipo de usuario no válido'),
     // body("contrasena").isLength({ min: 6 }).withMessage('La contraseña debe tener al menos 6 caracteres').notEmpty().withMessage('La contraseña es requerida'),
     // body("nombre").optional().isLength({ min: 3, max: 100 }).withMessage('El nombre debe tener entre 3 y 100 caracteres'),
+    body("correo").isEmail().withMessage('El correo debe tener un formato válido').custom(async value => {
+        if (!value) {
+            throw new Error('El correo no permite valores nulos');
+        }
+        else {
+            const buscarEmpleado = await ModeloEmpleado.findOne({
+                where: {
+                    correo: value
+                }
+            });
+            if (buscarEmpleado) {
+                throw new Error('Este correo del empleado ya existe');
+            }
+        }
+    }),
     body("telefonos").isArray().withMessage('Los teléfonos deben ser un array'),
     body("direcciones").isArray().withMessage('Las direcciones deben ser un array'),
     controladorEmpleado.updateEmpleado);
@@ -373,6 +407,8 @@ rutas.get('/buscar',
     query("segundoapellido").optional().isString().withMessage("El segundo apellido debe ser un texto"),
     query("sueldo").optional().isFloat().withMessage("El sueldo debe ser un número"),
     query("estado").optional().isString().withMessage("El estado debe ser un texto"),
+    query("telefono").optional().isString().withMessage("El teléfono debe ser un texto"),
+    query("direccion").optional().isString().withMessage("La dirección debe ser un texto"),
     controladorEmpleado.busqueda
 );
 
